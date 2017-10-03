@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(MainActivity.this,SensorActivity.class);
                 intent.putExtra("sensorId", sensorList.get(position).getType());
+                intent.putExtra("sensorName", sensorNames.get(position));
                 startActivity(intent);
 
             }

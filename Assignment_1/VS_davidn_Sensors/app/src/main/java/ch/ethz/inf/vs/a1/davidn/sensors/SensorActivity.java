@@ -24,16 +24,16 @@ import static ch.ethz.inf.vs.a1.davidn.sensors.R.id.graph;
 
 public class SensorActivity extends AppCompatActivity implements SensorEventListener, GraphContainer {
 
-    private SensorInformation mInfo;
+    private SensorTypesImpl mInfo;
     private SensorManager mSensorManager;
     private Sensor mSensor;
     private int mSensorId, mSize;
     private String mSensorName;
     private TextView textView;
     private long mStartTime;
-    private long mCurrentX;//TODO change to real time
     private GraphView mGraph;
     private ArrayList<LineGraphSeries<DataPoint>> mSeriesList;
+    private ArrayList<ArrayList<Float>> mValueList;
 
 
     @Override
@@ -41,14 +41,14 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sensor);
 
-        //TODO handle time
-        mStartTime = System.currentTimeMillis();
+        mStartTime = System.nanoTime();
 
         setTitle("Sensors");
         this.textView = (TextView) findViewById(R.id.textView);
 
         //Initialze helper class & sensors
-        this.mInfo = new SensorInformation();
+        mValueList = new ArrayList<ArrayList<Float>>();
+        this.mInfo = new SensorTypesImpl();
         this.mSensorId = getIntent().getIntExtra("sensorId",-1);
         this.mSensorName = getIntent().getStringExtra("sensorName");
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
@@ -60,13 +60,11 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
         //scrolling
         Viewport vp = mGraph.getViewport();
         vp.setXAxisBoundsManual(true);
-        vp.setMinX(0);
-        vp.setMaxX(100);
 
 
         //Setup of axis labels
         GridLabelRenderer gridLabel = mGraph.getGridLabelRenderer();
-        gridLabel.setHorizontalAxisTitle("i-th change in value");
+        gridLabel.setHorizontalAxisTitle("s");
         gridLabel.setVerticalAxisTitle(mInfo.getUnitString(mSensorId));
 
         //initializes dummy array & series list
@@ -115,12 +113,17 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
 
         if(mSize == -1) return;
 
-        long xValue = (System.currentTimeMillis() - mStartTime) / 1000;
+        ArrayList<Float> tempList = new ArrayList<Float>();
+
+        long elapseTime = System.nanoTime() - mStartTime;
+
         textView.setText(getUpperText(event.values));
         for(int j = 0; j < mSize; j++){
-            mSeriesList.get(j).appendData(new DataPoint(mCurrentX, event.values[j]), true, 100);
+            tempList.add(event.values[j]);
+            mSeriesList.get(j).appendData(new DataPoint(elapseTime/Math.pow(10,9), event.values[j]), true, 100);
         }
-        mCurrentX++;
+
+        mValueList.add(tempList);
 
     }
 
@@ -137,24 +140,36 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
     }
 
 
-    //TODO implement functions
+    //TODO check if addValues & getValues work
+
     @Override
     public void addValues(double xIndex, float[] values) {
 
+        ArrayList<Float> tempList = new ArrayList<Float>();
+        for(int i = 0; i < values.length; i++){
+            tempList.add(values[i]);
+        }
+
+        //TODO check if to int casting is correct
+        mValueList.add((int)xIndex, tempList);
     }
+
 
     @Override
     public float[][] getValues() {
 
+        //initalize big array
+        //TODO check if to int casting is correct
+        int length = mValueList.get(0).size();
+        float[][] toReturn = new float[(int)length][mSize];
 
-       /* for( int j = 0; j < mCurrentX; j++){
-            for(int i = 0; i < mSize; i++){
-                toReturn[i] = mSeriesList.get(i).getY();
+        for(int i = 0; i < length; i++){
+            for(int j = 0; j < mSize; j++){
+                toReturn[i][j] = mValueList.get(i).get(j);
             }
-        }*/
+        }
 
-
-        return new float[][]{{0f},{0f}};
+        return toReturn;
     }
 
 }

@@ -17,7 +17,7 @@ import static android.hardware.Sensor.TYPE_ROTATION_VECTOR;
  * Created by philipp on 10/2/17.
  */
 
-public class SensorInformation implements SensorTypes{
+public class SensorTypesImpl implements SensorTypes{
 
     public int getNumberValues(int sensorType){
         switch (sensorType){
@@ -61,13 +61,13 @@ public class SensorInformation implements SensorTypes{
             case TYPE_GRAVITY:
                 return "m/s^2";
             case TYPE_GYROSCOPE:
-                return "radians/s";
+                return "rad/s";
             case TYPE_LIGHT:
-                return "lux";
+                return "lx";
             case TYPE_LINEAR_ACCELERATION:
                 return "m/s^2";
             case TYPE_MAGNETIC_FIELD:
-                return "uT";
+                return "microT";
             case TYPE_ORIENTATION:
                 return "degrees";
             case TYPE_PRESSURE:
@@ -77,7 +77,7 @@ public class SensorInformation implements SensorTypes{
             case TYPE_RELATIVE_HUMIDITY:
                 return "%";
             case TYPE_ROTATION_VECTOR:
-                return "degrees"; //Unsure if correct
+                return "no unit"; //Unsure if correct
             default:
                 return "error";
         }

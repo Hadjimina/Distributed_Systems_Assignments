@@ -61,11 +61,11 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
         Viewport vp = mGraph.getViewport();
         vp.setXAxisBoundsManual(true);
 
-
         //Setup of axis labels
         GridLabelRenderer gridLabel = mGraph.getGridLabelRenderer();
         gridLabel.setHorizontalAxisTitle("s");
         gridLabel.setVerticalAxisTitle(mInfo.getUnitString(mSensorId));
+
 
         //initializes dummy array & series list
         if(mSize != -1){

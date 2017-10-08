@@ -33,7 +33,7 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
     private long mStartTime;
     private GraphView mGraph;
     private ArrayList<LineGraphSeries<DataPoint>> mSeriesList;
-    private ArrayList<ArrayList<Float>> mValueList;
+    private ArrayList<float[]> mValueList;
 
 
     @Override
@@ -41,15 +41,16 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sensor);
 
+        Log.i("Init", "initalized");
         mStartTime = System.nanoTime();
 
         setTitle("Sensors");
         this.textView = (TextView) findViewById(R.id.textView);
 
         //Initialze helper class & sensors
-        mValueList = new ArrayList<ArrayList<Float>>();
+        mValueList = new ArrayList<>();
         this.mInfo = new SensorTypesImpl();
-        this.mSensorId = getIntent().getIntExtra("sensorId",-1);
+        this.mSensorId = getIntent().getIntExtra("sensorId",1);
         this.mSensorName = getIntent().getStringExtra("sensorName");
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mSensor = mSensorManager.getDefaultSensor(mSensorId);
@@ -71,7 +72,6 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
         if(mSize != -1){
             float[] dummy = new float[mSize];
             for(int i = 0; i < mSize; i++){
-                Log.i("Size", i+"");
                 dummy[i] = 0.0f;
 
                 //Get random graph color
@@ -89,8 +89,12 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
             textView.setText(mSensorName+"\n is not supported");
         }
 
-
     }
+    public GraphContainer getGraphContainer(){
+
+        return this;
+    }
+
 
     public String getUpperText(float[] events){
 
@@ -113,17 +117,16 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
 
         if(mSize == -1) return;
 
-        ArrayList<Float> tempList = new ArrayList<Float>();
 
         long elapseTime = System.nanoTime() - mStartTime;
 
         textView.setText(getUpperText(event.values));
         for(int j = 0; j < mSize; j++){
-            tempList.add(event.values[j]);
+//TODO
             mSeriesList.get(j).appendData(new DataPoint(elapseTime/Math.pow(10,9), event.values[j]), true, 100);
         }
 
-        mValueList.add(tempList);
+
 
     }
 
@@ -140,36 +143,47 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
     }
 
 
-    //TODO check if addValues & getValues work
-
     @Override
     public void addValues(double xIndex, float[] values) {
 
-        ArrayList<Float> tempList = new ArrayList<Float>();
-        for(int i = 0; i < values.length; i++){
-            tempList.add(values[i]);
+        //assumming accurate double to int
+        int index = (int)xIndex -1;
+        if(mValueList == null){
+            mValueList = new ArrayList<>();
         }
 
-        //TODO check if to int casting is correct
-        mValueList.add((int)xIndex, tempList);
+       /* if (mSize != 0 && values.length != mSize){
+            float[] temp = new float[mSize];
+            System.arraycopy(values,0, temp,0,values.length);
+            mValueList.add(index,temp);
+        }*/
+
+        mSize = values.length;
+
+
+        mValueList.add(index, values);
+
     }
 
 
     @Override
     public float[][] getValues() {
 
-        //initalize big array
-        //TODO check if to int casting is correct
-        int length = mValueList.get(0).size();
-        float[][] toReturn = new float[(int)length][mSize];
+        if (mSize == 0 || mValueList.size() == 0) return (new float[0][0]);
+        int height = mValueList.size();
+        int i = height > 100 ? height - 100 : 0;
+        height = Math.min(100, height);
 
-        for(int i = 0; i < length; i++){
-            for(int j = 0; j < mSize; j++){
-                toReturn[i][j] = mValueList.get(i).get(j);
-            }
+        float[][] toReturn = new float[height][mSize];
+
+        int iSmall = 0;
+        for (; i < mValueList.size(); i++){
+            toReturn[iSmall] = mValueList.get(i);
+            iSmall++;
         }
 
         return toReturn;
     }
+
 
 }

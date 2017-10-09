@@ -12,8 +12,8 @@ public class SettingsActivity extends AppCompatActivity implements SettingsFragm
         super.onCreate(savedInstanceState);
         Log.i("testing","tesing");
         setTitle("Settings");
-        // Display the fragment as the main content.
 
+        // Display the fragment as the main content.
         getFragmentManager().beginTransaction()
                 .replace(android.R.id.content, new SettingsFragment())
                 .commit();

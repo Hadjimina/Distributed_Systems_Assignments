@@ -1,6 +1,7 @@
 package ch.ethz.inf.vs.a1.davidn.antitheft;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
@@ -29,6 +30,8 @@ public class SettingsFragment extends PreferenceFragment implements SeekBar.OnSe
     private TextView txtv2;
     private View mRootView;
 
+    private int progress1;
+    private int progress2;
 
     public SettingsFragment() {
         // Required empty public constructor
@@ -43,7 +46,6 @@ public class SettingsFragment extends PreferenceFragment implements SeekBar.OnSe
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
     }
 
 
@@ -53,6 +55,7 @@ public class SettingsFragment extends PreferenceFragment implements SeekBar.OnSe
         seekBarInit();
     }
 
+    //Initialize SeekBars and TextViews
     public void seekBarInit(){
         sb1=(SeekBar) getView().findViewById(R.id.seekBar2);
         sb2=(SeekBar) getView().findViewById(R.id.seekBar3);
@@ -60,13 +63,21 @@ public class SettingsFragment extends PreferenceFragment implements SeekBar.OnSe
         txtv1=(TextView) getView().findViewById(R.id.textView3);
         txtv2=(TextView) getView().findViewById(R.id.textView4);
 
+        //Get last values of SeekBars
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        int defaultValue1 = 5;
+        int defaultValue2 = 10;
+        progress1 = sharedPref.getInt(getString(R.string.progress1), defaultValue1);
+        progress2 = sharedPref.getInt(getString(R.string.progress2), defaultValue2);
+
+        sb1.setProgress(progress1);
+        sb2.setProgress(progress2);
 
         sb1.setOnSeekBarChangeListener(this);
         sb2.setOnSeekBarChangeListener(this);
 
-
-        txtv1.setText(R.string.settings);
-        txtv2.setText(sb2.getProgress() + " / " + sb2.getMax());
+        txtv1.setText(getString(R.string.delay) + ": " + sb1.getProgress() + "/" + sb2.getMax());
+        txtv2.setText(getString(R.string.sensitivity) + ": " + sb2.getProgress() + "/" + sb2.getMax());
     }
 
     @Override
@@ -93,18 +104,18 @@ public class SettingsFragment extends PreferenceFragment implements SeekBar.OnSe
         mListener = null;
     }
 
-
    @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         switch (seekBar.getId())
         {
             case R.id.seekBar2:
                 sb1.setProgress(progress);
-                txtv1.setText(progress + " / " + sb1.getMax());
+                txtv1.setText(getString(R.string.delay) + ": " + progress + "/" + sb2.getMax());
+
                 break;
             case R.id.seekBar3:
                 sb2.setProgress(progress);
-                txtv2.setText(progress + " / " + sb2.getMax());
+                txtv2.setText(getString(R.string.sensitivity) + ": " + sb2.getProgress() + "/" + sb2.getMax());
                 break;
         }
     }
@@ -112,15 +123,24 @@ public class SettingsFragment extends PreferenceFragment implements SeekBar.OnSe
 
 
     @Override
-    public void onStartTrackingTouch(SeekBar seekBar) {
-
-    }
+    public void onStartTrackingTouch(SeekBar seekBar) {}
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
-
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        switch (seekBar.getId())
+        {
+            case R.id.seekBar2:
+                editor.putInt(getString(R.string.progress1), sb1.getProgress());
+                editor.commit();
+                break;
+            case R.id.seekBar3:
+                editor.putInt(getString(R.string.progress2), sb2.getProgress());
+                editor.commit();
+                break;
+        }
     }
-
 
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name

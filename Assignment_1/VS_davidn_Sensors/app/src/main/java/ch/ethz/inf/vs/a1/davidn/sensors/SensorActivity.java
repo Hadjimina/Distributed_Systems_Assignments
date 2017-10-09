@@ -119,8 +119,9 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
 
 
         long elapseTime = System.nanoTime() - mStartTime;
-
-        mValueList.add(event.values);
+        
+        //strange injection error 
+        //mValueList.add(event.values);
         textView.setText(getUpperText(event.values));
         for(int j = 0; j < mSize; j++){
             mSeriesList.get(j).appendData(new DataPoint(elapseTime/Math.pow(10,9), event.values[j]), true, 100);

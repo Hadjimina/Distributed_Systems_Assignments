@@ -13,6 +13,7 @@ public class AntiTheftService extends Service implements AlarmCallback{
 
     private Notification mNotification;
 
+
     public AntiTheftService() {
     }
 
@@ -40,7 +41,7 @@ public class AntiTheftService extends Service implements AlarmCallback{
     // the addAction re-use the same intent to keep the example short
         mNotification  = new Notification.Builder(this)
                 .setContentTitle("Your Device has been locked")
-                .setContentText("Moving the device will triger an alarm")
+                .setContentText("Moving the device will trigger an alarm")
                 .setSmallIcon(R.drawable.locked)
                 .setContentIntent(pIntent)
                 .setOngoing(true).build();

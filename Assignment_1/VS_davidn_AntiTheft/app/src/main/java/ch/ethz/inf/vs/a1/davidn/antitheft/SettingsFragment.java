@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,8 @@ public class SettingsFragment extends PreferenceFragment implements SeekBar.OnSe
     private SeekBar sb2;
     private TextView txtv1;
     private TextView txtv2;
+    private View mRootView;
+
 
     public SettingsFragment() {
         // Required empty public constructor
@@ -40,20 +43,27 @@ public class SettingsFragment extends PreferenceFragment implements SeekBar.OnSe
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+    }
+
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        seekBarInit();
     }
 
     public void seekBarInit(){
-        sb1=(SeekBar) getActivity().findViewById(R.id.seekBar2);
-        sb2=(SeekBar) getActivity().findViewById(R.id.seekBar3);
+        sb1=(SeekBar) getView().findViewById(R.id.seekBar2);
+        sb2=(SeekBar) getView().findViewById(R.id.seekBar3);
 
-        txtv1=(TextView) getActivity().findViewById(R.id.textView3);
-        txtv2=(TextView) getActivity().findViewById(R.id.textView4);
+        txtv1=(TextView) getView().findViewById(R.id.textView3);
+        txtv2=(TextView) getView().findViewById(R.id.textView4);
 
-        sb1.setMax(10);
-        sb2.setMax(20);
 
         sb1.setOnSeekBarChangeListener(this);
         sb2.setOnSeekBarChangeListener(this);
+
 
         txtv1.setText(R.string.settings);
         txtv2.setText(sb2.getProgress() + " / " + sb2.getMax());
@@ -83,7 +93,8 @@ public class SettingsFragment extends PreferenceFragment implements SeekBar.OnSe
         mListener = null;
     }
 
-    @Override
+
+   @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         switch (seekBar.getId())
         {
@@ -97,6 +108,8 @@ public class SettingsFragment extends PreferenceFragment implements SeekBar.OnSe
                 break;
         }
     }
+
+
 
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {

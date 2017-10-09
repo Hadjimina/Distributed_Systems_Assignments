@@ -17,8 +17,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="43dp"
-        android:text="@string/settings_delay" />
+        android:layout_marginTop="43dp" />
 
     <SeekBar
         android:id="@+id/seekBar2"
@@ -35,8 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/seekBar2"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="18dp"
-        android:text="@string/settings_sensitivity" />
+        android:layout_marginTop="18dp" />
 
     <SeekBar
         android:id="@+id/seekBar3"

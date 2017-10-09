@@ -10,7 +10,7 @@ public class SpikeMovementDetector extends AbstractMovementDetector {
 
     @Override
     public boolean doAlarmLogic(float[] values) {
-        // TODO, insert your logic here
+        // do alarm logic here
         return false;
     }
 }

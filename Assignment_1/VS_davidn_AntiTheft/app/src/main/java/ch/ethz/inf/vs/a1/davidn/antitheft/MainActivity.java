@@ -3,6 +3,7 @@ package ch.ethz.inf.vs.a1.davidn.antitheft;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -18,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        Log.i("testing","tesing");
         setTitle("Lock me");
 
         //Initalize
@@ -54,8 +55,17 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
-        Intent myIntent = new Intent(getApplicationContext(),SettingsActivity.class);
-        startActivityForResult(myIntent, 0);
-        return true;
+        //Intent myIntent = new Intent(this,SettingsActivity.class);
+        //startActivityForResult(myIntent, 0);
+        //return true;
+
+        switch (item.getItemId()) {
+            case R.id.menu_settings:
+                Intent myIntent = new Intent(this, SettingsActivity.class);
+                this.startActivity(myIntent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

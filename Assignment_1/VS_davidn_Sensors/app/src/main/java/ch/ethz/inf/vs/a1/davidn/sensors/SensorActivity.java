@@ -8,7 +8,6 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.TextView;
 
 import com.jjoe64.graphview.GraphView;
@@ -41,7 +40,6 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sensor);
 
-        Log.i("Init", "initalized");
         mStartTime = System.nanoTime();
 
         setTitle("Sensors");
@@ -100,8 +98,8 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
 
         String toReturn = mSensorName;
 
-        for(float f : events){
-            toReturn += "\n"+f;
+        for(int i = 0; i < mSize; i++){
+            toReturn += "\n"+events[i];
         }
 
         return toReturn;
@@ -115,15 +113,14 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
     @Override
     public final void onSensorChanged(SensorEvent event) {
 
-        Log.i("asdf","changed");
         if(mSize == -1) return;
 
 
         long elapseTime = System.nanoTime() - mStartTime;
-        
-        //strange injection error 
-        //mValueList.add(event.values);
+
+
         textView.setText(getUpperText(event.values));
+
         for(int j = 0; j < mSize; j++){
             mSeriesList.get(j).appendData(new DataPoint(elapseTime/Math.pow(10,9), event.values[j]), true, 100);
         }

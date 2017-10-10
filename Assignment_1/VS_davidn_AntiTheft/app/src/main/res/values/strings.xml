@@ -4,4 +4,8 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="settings">Settings</string>
+    <string name="delay">Set Delay</string>
+    <string name="sensitivity">Set Sensitivity</string>
+    <string name="progress1">progress1</string>
+    <string name="progress2">progress2</string>
 </resources>

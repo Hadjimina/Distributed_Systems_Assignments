@@ -24,9 +24,9 @@ public class MainActivity extends AppCompatActivity {
         //Initalize
         mToggleValue = false;
         mToggle = (ImageView)findViewById(R.id.imageView);
+        mToggle.setImageResource(R.drawable.unlocked);
 
-
-
+        //start or stop AntiTheftService
         mToggle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -39,8 +39,6 @@ public class MainActivity extends AppCompatActivity {
                     stopService(new Intent(MainActivity.this, AntiTheftService.class));
                     mToggle.setImageResource(R.drawable.unlocked);
                 }
-
-
             }
         });
     }
@@ -54,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
-        Intent myIntent = new Intent(getApplicationContext(),SettingsActivity.class);
+        Intent myIntent = new Intent(this,SettingsActivity.class);
         startActivityForResult(myIntent, 0);
         return true;
     }

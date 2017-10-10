@@ -13,14 +13,33 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        android:id="@+id/textView"/>
+        android:text="temperature:"
+        android:id="@+id/tempTextView"/>
 
-    <ListView
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/listView"
-        android:layout_below="@id/textView"
+        android:id="@+id/tempData"
+        android:text="0000"
+        android:layout_toEndOf="@id/tempTextView"
+        />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/humTextView"
+        android:text="humidity:"
+        android:layout_below="@id/tempData"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/humData"
+        android:text="0000"
+        android:layout_toEndOf="@id/humTextView"
+        android:layout_alignBottom="@id/humTextView"
         />
 
 </RelativeLayout>

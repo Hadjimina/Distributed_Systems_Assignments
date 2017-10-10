@@ -16,17 +16,18 @@ public abstract class AbstractMovementDetector implements SensorEventListener {
     private Context context;
 
     private Sensor mSensor;
-    private SensorManager mSensorManager;
+    public SensorManager mSensorManager;
 
 
     public AbstractMovementDetector(AlarmCallback mCallback, int sensitivity, Context mContext){
         this.callback = mCallback;
         this.mSensitivity = sensitivity;
-        context = mContext;
+        context = mContext.getApplicationContext();
+
+        Log.i("abstractmov", "abstract Movement Detector is in constructor");
 
         mSensorManager = (SensorManager) context.getSystemService(SENSOR_SERVICE);
         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
-        Log.i("movcreated", "");
     }
 
     //Register the Sensor
@@ -47,11 +48,15 @@ public abstract class AbstractMovementDetector implements SensorEventListener {
         if (event.sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION) {
             // Copy values because the event is not owned by the application
             float[] values = event.values.clone();
-            if(doAlarmLogic(values)){
+            if (doAlarmLogic(values)) {
                 callback.onDelayStarted();
                 //sound alarm
             }
         }
+    }
+
+    public void setSensitivity(int sens){
+        mSensitivity = sens;
     }
 
     @Override

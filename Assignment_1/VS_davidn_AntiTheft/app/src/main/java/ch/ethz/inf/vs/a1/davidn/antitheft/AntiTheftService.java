@@ -36,34 +36,31 @@ public class AntiTheftService extends Service implements AlarmCallback, OnShared
     public void onDelayStarted() {
 
         //Make a delay
-        Runnable r = new Runnable() {
-
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
             @Override
-            //Make an Alarm sound
             public void run() {
-                Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-                float vlm = 100;
-                mp = MediaPlayer.create(getApplicationContext(), notification);
+                // Do something after delay
+                Uri alarm = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+                float vlm = 150;
+                mp = MediaPlayer.create(getApplicationContext(), alarm);
                 mp.setVolume(vlm, vlm);
                 mp.setLooping(true);
                 mp.start();
                 Log.i("alarmset", "alarm went off!");
             }
-        };
-
-        Handler h = new Handler();
-        h.postDelayed(r, delay * 1000);
+        }, delay * 1000);
     }
 
     //Create notification
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.i("servi", "service doesn't work");
+        SharedPreferences prefs = getSharedPreferences("values", MODE_PRIVATE);
+        prefs.registerOnSharedPreferenceChangeListener(this);
+
         //Do the Movement detection
         spike = new SpikeMovementDetector(this, sensitivity, this);
         spike.registerSensorListener();
-
-
 
         Intent intentA = new Intent(this, MainActivity.class);
         PendingIntent pIntent = PendingIntent.getActivity(this, 0, intentA, 0);
@@ -98,8 +95,9 @@ public class AntiTheftService extends Service implements AlarmCallback, OnShared
     //Update delay and sensitiviy if changed
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-        Log.i("prefchange", "");
+        Log.i("prefchange", "prefernece got changed");
         delay = sharedPreferences.getInt(getString(R.string.progress1), 5);
         sensitivity = sharedPreferences.getInt(getString(R.string.progress2), 10);
+        spike.setSensitivity(sensitivity);
     }
 }

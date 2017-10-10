@@ -3,6 +3,7 @@ package ch.ethz.inf.vs.a1.davidn.antitheft;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -18,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        Log.i("mainac", "main acivity works");
         setTitle("Lock me");
 
         //Initalize
@@ -31,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 mToggleValue = !mToggleValue;
+
 
                 if(mToggleValue){
                     startService(new Intent(MainActivity.this, AntiTheftService.class));

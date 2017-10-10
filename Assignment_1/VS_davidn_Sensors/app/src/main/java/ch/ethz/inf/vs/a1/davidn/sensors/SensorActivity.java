@@ -115,6 +115,7 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
     @Override
     public final void onSensorChanged(SensorEvent event) {
 
+        Log.i("asdf","changed");
         if(mSize == -1) return;
 
 
@@ -148,20 +149,24 @@ public class SensorActivity extends AppCompatActivity implements SensorEventList
 
         //assumming accurate double to int
         int index = (int)xIndex -1;
+
+        mSize = mSize == 0 ? values.length : mSize;
+
+        if(mSize != 0 && values.length != mSize){
+            throw new IllegalArgumentException("dimension mismatch");
+        }
+
         if(mValueList == null){
             mValueList = new ArrayList<>();
         }
 
-       /* if (mSize != 0 && values.length != mSize){
-            float[] temp = new float[mSize];
-            System.arraycopy(values,0, temp,0,values.length);
-            mValueList.add(index,temp);
-        }*/
 
-        mSize = values.length;
-
+        for(int j = 0; j < mSize; j++){
+            mSeriesList.get(j).appendData(new DataPoint(index, values[j]), true, 100);
+        }
 
         mValueList.add(index, values);
+
 
     }
 

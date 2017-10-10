@@ -96,13 +96,8 @@ public class GraphTest {
     @Test
     public void test7() {
         float[][] values = {{1.0f, 1.0f, 1.0f}, {1.0f}};
-        try {
-            carryOutTest(values, values);
-        } catch (NullPointerException n) {
-            fail();
-        } catch (Exception e) {
-            // Pass
-        }
+          carryOutTest(values, values);
+
     }
 
     /*

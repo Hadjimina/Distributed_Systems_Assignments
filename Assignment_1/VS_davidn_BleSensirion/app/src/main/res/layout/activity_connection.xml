@@ -14,23 +14,57 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="temperature:"
+        android:textSize="30sp"
         android:id="@+id/tempTextView"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/celsius"
+        android:text="\u00B0 C"
+        android:textSize="25sp"
+        android:layout_alignParentRight="true"
+        android:layout_alignBottom="@id/tempTextView"
+        />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tempData"
         android:text="0000"
-        android:layout_toEndOf="@id/tempTextView"
+        android:textSize="25sp"
+        android:layout_alignBottom="@id/tempTextView"
+        android:layout_toLeftOf="@id/celsius"
+
         />
 
+
+
+    <com.jjoe64.graphview.GraphView
+        android:layout_width="match_parent"
+        android:layout_height="200dip"
+        android:id="@+id/tempGraph"
+        android:layout_below="@id/tempTextView"
+        />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/humTextView"
         android:text="humidity:"
-        android:layout_below="@id/tempData"
+        android:textSize="30sp"
+        android:layout_below="@id/tempGraph"
+        android:layout_marginTop="15sp"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/percent"
+        android:text="\u0025"
+        android:textSize="25sp"
+        android:layout_alignParentRight="true"
+        android:layout_alignBottom="@id/humTextView"
         />
 
     <TextView
@@ -38,8 +72,19 @@
         android:layout_height="wrap_content"
         android:id="@+id/humData"
         android:text="0000"
-        android:layout_toEndOf="@id/humTextView"
+        android:textSize="25sp"
+        android:layout_toLeftOf="@id/percent"
         android:layout_alignBottom="@id/humTextView"
         />
+
+    <com.jjoe64.graphview.GraphView
+        android:layout_width="match_parent"
+        android:layout_height="200dip"
+        android:id="@+id/humGraph"
+        android:layout_below="@id/humTextView"
+        />
+
+
+
 
 </RelativeLayout>

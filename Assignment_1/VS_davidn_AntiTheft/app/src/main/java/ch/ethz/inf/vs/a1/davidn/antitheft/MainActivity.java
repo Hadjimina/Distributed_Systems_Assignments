@@ -54,6 +54,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
+        if(mToggleValue){
+            return true;
+        }
         Intent myIntent = new Intent(this,SettingsActivity.class);
         startActivityForResult(myIntent, 0);
         return true;

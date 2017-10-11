@@ -1,8 +1,6 @@
 package ch.ethz.inf.vs.a1.davidn.antitheft;
 
-import android.app.Instrumentation;
-import android.content.Context;
-import android.content.pm.InstrumentationInfo;
+import android.hardware.SensorManager;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -15,13 +13,12 @@ import static org.junit.Assert.assertTrue;
  */
 public class SpikeMovementDetectorTest implements AlarmCallback {
 
-    SpikeMovementDetector movementDetector;
+    SpikeMovementDetector movementDetector = new SpikeMovementDetector(this, 10);
     boolean result;
 
     @Before
     public void setup() {
         result = false;
-        movementDetector = new SpikeMovementDetector(this, 10);
     }
 
     @Test
@@ -77,4 +74,10 @@ public class SpikeMovementDetectorTest implements AlarmCallback {
     public void onDelayStarted() {
         // Do not do anything
     }
+
+    @Override
+    public SensorManager getmSensorManager() {
+        return null;
+    }
+
 }

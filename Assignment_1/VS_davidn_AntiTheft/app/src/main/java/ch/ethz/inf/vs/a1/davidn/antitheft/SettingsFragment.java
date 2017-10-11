@@ -64,7 +64,7 @@ public class SettingsFragment extends PreferenceFragment implements SeekBar.OnSe
         txtv2=(TextView) getView().findViewById(R.id.textView4);
 
         //Get last values of SeekBars
-        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("values", Context.MODE_PRIVATE);
         int defaultValue1 = 5;
         int defaultValue2 = 10;
         progress1 = sharedPref.getInt(getString(R.string.progress1), defaultValue1);
@@ -127,7 +127,7 @@ public class SettingsFragment extends PreferenceFragment implements SeekBar.OnSe
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
-        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("values",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         switch (seekBar.getId())
         {

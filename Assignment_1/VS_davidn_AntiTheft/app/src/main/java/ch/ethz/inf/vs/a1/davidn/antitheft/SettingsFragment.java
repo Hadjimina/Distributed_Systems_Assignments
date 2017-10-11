@@ -127,7 +127,7 @@ public class SettingsFragment extends PreferenceFragment implements SeekBar.OnSe
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
-        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("values",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         switch (seekBar.getId())
         {

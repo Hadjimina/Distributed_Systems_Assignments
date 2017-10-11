@@ -7,8 +7,6 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.util.Log;
 
-import static android.content.Context.SENSOR_SERVICE;
-
 public abstract class AbstractMovementDetector implements SensorEventListener {
 
     protected AlarmCallback callback;
@@ -19,37 +17,21 @@ public abstract class AbstractMovementDetector implements SensorEventListener {
     public SensorManager mSensorManager;
 
 
-    public AbstractMovementDetector(AlarmCallback mCallback, int sensitivity, Context mContext){
+    public AbstractMovementDetector(AlarmCallback mCallback, int sensitivity){
         this.callback = mCallback;
         this.mSensitivity = sensitivity;
-        context = mContext.getApplicationContext();
-
-        Log.i("abstractmov", "abstract Movement Detector is in constructor");
-
-        mSensorManager = (SensorManager) context.getSystemService(SENSOR_SERVICE);
-        mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
-    }
-
-    //Register the Sensor
-    public void registerSensorListener(){
-        mSensorManager.registerListener(this, mSensor, SensorManager.SENSOR_DELAY_NORMAL);
-        Log.i("movreg", "is registered");
-    }
-
-    //Unregister the Sensor
-    public void unregisterSensorListener(){
-        mSensorManager.unregisterListener(this);
     }
 
     // Sensor monitoring
     @Override
     public void onSensorChanged(SensorEvent event) {
-        Log.i("senchange", "");
+        Log.d("#", "onSensorChanged");
         if (event.sensor.getType() == Sensor.TYPE_LINEAR_ACCELERATION) {
             // Copy values because the event is not owned by the application
             float[] values = event.values.clone();
             if (doAlarmLogic(values)) {
                 callback.onDelayStarted();
+
                 //sound alarm
             }
         }

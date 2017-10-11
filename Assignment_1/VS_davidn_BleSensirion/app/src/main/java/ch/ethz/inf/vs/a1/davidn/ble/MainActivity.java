@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     List<String> deviceArray;
     ArrayAdapter<String> listAdapter;
     BluetoothLeScanner scanner;
+    boolean permissionGranted = false;
 
 
 
@@ -47,26 +48,19 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, R.string.ble_not_supported, Toast.LENGTH_SHORT).show();
             finish();
         }
+        int permissionCheck3 = ContextCompat.checkSelfPermission(MainActivity.this,
+                Manifest.permission.ACCESS_FINE_LOCATION);
+        if(permissionCheck3 == 0) {
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 200);
+        }
+
         listView = (ListView) findViewById(R.id.listView);
         deviceArray = new ArrayList<String>();
         listAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, deviceArray);
         listView.setAdapter(listAdapter);
 
-        int permissionCheck1 = ContextCompat.checkSelfPermission(MainActivity.this,
-                Manifest.permission.BLUETOOTH);
-        System.out.println(permissionCheck1);
 
-        int permissionCheck2 = ContextCompat.checkSelfPermission(MainActivity.this,
-                Manifest.permission.BLUETOOTH_ADMIN);
-        System.out.println(permissionCheck2);
-
-        int permissionCheck3 = ContextCompat.checkSelfPermission(MainActivity.this,
-                Manifest.permission.ACCESS_FINE_LOCATION);
-        System.out.println(permissionCheck3);
-        if(permissionCheck3 == 0) {
-        } else {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 200);
-        }
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
@@ -94,12 +88,10 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(enableBtIntent, 1);
         }
         scanDevices();
-        /*List<String> deviceNames = new ArrayList<>();
-        for (int i = 0; i < scanResults.size(); i++) {
-            deviceNames.add(scanResults.get(i).getDevice().getName());
-        }*/
 
     }
+
+
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -117,11 +109,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 scanner.stopScan(callback);
-                System.out.println("SCAN STOPPED");
             }
         }, SCAN_PERIOD);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            System.out.println("CHECK");
+
             scanner.startScan(filters, settings(), callback);
         }
 
@@ -141,7 +132,6 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onBatchScanResults (List < ScanResult > results) {
-            System.out.println("Ischs das? ");
         }
 
         @Override
@@ -176,6 +166,7 @@ public class MainActivity extends AppCompatActivity {
         deviceArray.add(deviceName);
         listAdapter.notifyDataSetChanged();
     }
+
 
 
 }

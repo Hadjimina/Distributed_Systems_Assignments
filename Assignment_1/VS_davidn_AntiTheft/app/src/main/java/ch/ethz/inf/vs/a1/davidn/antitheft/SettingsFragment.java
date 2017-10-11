@@ -9,10 +9,14 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.SeekBar;
+import android.widget.Switch;
 import android.widget.TextView;
 
-public class SettingsFragment extends PreferenceFragment implements SeekBar.OnSeekBarChangeListener {
+import static android.content.Context.MODE_PRIVATE;
+
+public class SettingsFragment extends PreferenceFragment implements SeekBar.OnSeekBarChangeListener, Switch.OnCheckedChangeListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -28,10 +32,11 @@ public class SettingsFragment extends PreferenceFragment implements SeekBar.OnSe
     private SeekBar sb2;
     private TextView txtv1;
     private TextView txtv2;
-    private View mRootView;
+    private Switch aSwitch;
 
     private int progress1;
     private int progress2;
+    private boolean walkmov;
 
     public SettingsFragment() {
         // Required empty public constructor
@@ -63,18 +68,24 @@ public class SettingsFragment extends PreferenceFragment implements SeekBar.OnSe
         txtv1=(TextView) getView().findViewById(R.id.textView3);
         txtv2=(TextView) getView().findViewById(R.id.textView4);
 
+        aSwitch=(Switch) getView().findViewById(R.id.switch1);
+
         //Get last values of SeekBars
-        SharedPreferences sharedPref = getActivity().getSharedPreferences("values", Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("values", MODE_PRIVATE);
         int defaultValue1 = 5;
         int defaultValue2 = 10;
+        boolean defaultValue3 = false;
         progress1 = sharedPref.getInt(getString(R.string.progress1), defaultValue1);
         progress2 = sharedPref.getInt(getString(R.string.progress2), defaultValue2);
+        walkmov = sharedPref.getBoolean(getString(R.string.walkmov), defaultValue3);
 
         sb1.setProgress(progress1);
         sb2.setProgress(progress2);
+        aSwitch.setChecked(walkmov);
 
         sb1.setOnSeekBarChangeListener(this);
         sb2.setOnSeekBarChangeListener(this);
+        aSwitch.setOnCheckedChangeListener(this);
 
         txtv1.setText(getString(R.string.delay) + ": " + sb1.getProgress() + "/" + sb2.getMax());
         txtv2.setText(getString(R.string.sensitivity) + ": " + sb2.getProgress() + "/" + sb2.getMax());
@@ -120,14 +131,12 @@ public class SettingsFragment extends PreferenceFragment implements SeekBar.OnSe
         }
     }
 
-
-
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {}
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
-        SharedPreferences sharedPref = getActivity().getSharedPreferences("values",Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("values", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         switch (seekBar.getId())
         {
@@ -140,6 +149,15 @@ public class SettingsFragment extends PreferenceFragment implements SeekBar.OnSe
                 editor.commit();
                 break;
         }
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+        compoundButton.setChecked(b);
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("values", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putBoolean(getString(R.string.walkmov), b);
+        editor.commit();
     }
 
     public interface OnFragmentInteractionListener {

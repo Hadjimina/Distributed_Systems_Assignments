@@ -22,17 +22,19 @@ public class AntiTheftService extends Service implements AlarmCallback, OnShared
     private Notification mNotification;
     public SensorManager mSensorManager;
     private Sensor mSensor;
-    private SpikeMovementDetector spike;
+    private AbstractMovementDetector spikeOrWalk;
     private int sensitivity;
     private int delay;
+    private boolean walkmov;
     MediaPlayer mp;
+
+
 
     public AntiTheftService() {
     }
 
     @Override
     public IBinder onBind(Intent intent) {
-        // TODO: Return the communication channel to the service.
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
@@ -41,16 +43,26 @@ public class AntiTheftService extends Service implements AlarmCallback, OnShared
     public int onStartCommand(Intent intent, int flags, int startId) {
         SharedPreferences prefs = getSharedPreferences("values", MODE_PRIVATE);
         prefs.registerOnSharedPreferenceChangeListener(this);
+        delay = prefs.getInt(getString(R.string.progress1), 5);
+        sensitivity = prefs.getInt(getString(R.string.progress2), 10);
+        walkmov = prefs.getBoolean(getString(R.string.walkmov), false);
 
-        //Sensor initialization
-
+        Log.d("#", "asdf got sharedpreferences in service " + sensitivity + " " + delay);
 
         //Do the Movement detection
-        spike = new SpikeMovementDetector(this, sensitivity);
+
+        if(walkmov){
+            spikeOrWalk = new WalkingMovementDetector(this, sensitivity);
+        }else{
+            spikeOrWalk = new SpikeMovementDetector(this, sensitivity);
+        }
 
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
-        mSensorManager.registerListener(spike, mSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        mSensorManager.registerListener(spikeOrWalk, mSensor, SensorManager.SENSOR_DELAY_NORMAL);
+
+        Uri alarm = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+        mp = MediaPlayer.create(getApplicationContext(), alarm);
 
         Intent intentA = new Intent(this, MainActivity.class);
         PendingIntent pIntent = PendingIntent.getActivity(this, 0, intentA, 0);
@@ -63,30 +75,27 @@ public class AntiTheftService extends Service implements AlarmCallback, OnShared
                 .setContentIntent(pIntent)
                 .setOngoing(true).build();
 
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.notify(2, mNotification);
 
-        notificationManager.notify(42, mNotification);
-
-        return super.onStartCommand(intent, flags, startId);
+        return START_STICKY;
     }
 
     @Override
     public void onDelayStarted() {
 
+
         //Make a delay
+        Log.d("#", "asdf on delay started " + delay);
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 // Do something after delay
-                Uri alarm = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
                 float vlm = 1.0f;
-                mp = MediaPlayer.create(getApplicationContext(), alarm);
                 mp.setVolume(vlm, vlm);
                 mp.setLooping(true);
                 mp.start();
-                Log.i("alarmset", "alarm went off!");
             }
         }, delay * 1000);
     }
@@ -95,22 +104,24 @@ public class AntiTheftService extends Service implements AlarmCallback, OnShared
     //Update delay and sensitiviy if changed
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-        Log.i("prefchange", "preferenece got changed");
+        Log.i("#", "asdf preferenece changed");
         delay = sharedPreferences.getInt(getString(R.string.progress1), 5);
         sensitivity = sharedPreferences.getInt(getString(R.string.progress2), 10);
-        spike.setSensitivity(sensitivity);
+        spikeOrWalk.setSensitivity(sensitivity);
     }
 
     //Notification delete, unregister Sensorlistener
     @Override
     public void onDestroy() {
-        mSensorManager.unregisterListener(spike);
+        Log.d("#", "asdf Service is being destroyed");
+        mSensorManager.unregisterListener(spikeOrWalk);
 
         mp.stop();
 
         NotificationManager notificationManager = (NotificationManager) this
                 .getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.cancel(42);
+        notificationManager.cancel(2);
+        Log.d("#", "asdf service successfully destroyed");
         super.onDestroy();
     }
 

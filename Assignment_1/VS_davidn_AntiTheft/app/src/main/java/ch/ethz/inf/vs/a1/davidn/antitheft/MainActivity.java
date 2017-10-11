@@ -19,7 +19,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.i("mainac", "main acivity works");
         setTitle("Lock me");
 
         //Initalize
@@ -33,11 +32,12 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 mToggleValue = !mToggleValue;
 
-
                 if(mToggleValue){
+                    Log.d("#", "asdf service started!");
                     startService(new Intent(MainActivity.this, AntiTheftService.class));
                     mToggle.setImageResource(R.drawable.locked);
                 }else{
+                    Log.d("#", "asdf service stopped!");
                     stopService(new Intent(MainActivity.this, AntiTheftService.class));
                     mToggle.setImageResource(R.drawable.unlocked);
                 }
@@ -60,5 +60,12 @@ public class MainActivity extends AppCompatActivity {
         Intent myIntent = new Intent(this,SettingsActivity.class);
         startActivityForResult(myIntent, 0);
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(!mToggleValue){
+            super.onBackPressed();
+        }
     }
 }

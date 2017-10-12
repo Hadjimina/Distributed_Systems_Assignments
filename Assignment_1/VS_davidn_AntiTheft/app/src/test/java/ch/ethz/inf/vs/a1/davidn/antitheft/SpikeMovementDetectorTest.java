@@ -1,7 +1,5 @@
 package ch.ethz.inf.vs.a1.davidn.antitheft;
 
-import android.hardware.SensorManager;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -73,11 +71,6 @@ public class SpikeMovementDetectorTest implements AlarmCallback {
     @Override
     public void onDelayStarted() {
         // Do not do anything
-    }
-
-    @Override
-    public SensorManager getmSensorManager() {
-        return null;
     }
 
 }

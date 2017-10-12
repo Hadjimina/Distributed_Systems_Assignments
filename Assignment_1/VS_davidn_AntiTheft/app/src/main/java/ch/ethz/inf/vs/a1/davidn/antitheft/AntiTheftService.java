@@ -28,8 +28,6 @@ public class AntiTheftService extends Service implements AlarmCallback, OnShared
     private boolean walkmov;
     MediaPlayer mp;
 
-
-
     public AntiTheftService() {
     }
 

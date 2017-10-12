@@ -1,5 +1,5 @@
 # Answers
-This is the Markdown document where we will put our answers for the mini test.
+
 
 ## Question 1:
 ### A)
@@ -43,14 +43,13 @@ public void accelMaxRate(){
 ```
 
 ### B)
-There are two problems with this code:
 
 1. A problem may occur when logging the values. The `onSensorChanged(SensorEvent event)` function is called all the time because the the values of the accelerometer change all the time. Thus when the `log(int type, float[] values)` is called (which takes some time to complete) we could run into issues with things like the order in which the events are logged or some logs might get lost. Also because the `log` function takes some time and is called at every change of sensor values (especially accelerometer values) the phone could get very slow.
 
 ## Question 2:
-(`onCreate`, `onStart` and )`OnResume` are invoked when transitioning to *Activity Running*.
+`onCreate`, `onStart` and `OnResume` are invoked when transitioning to *Activity Running*.
 
-(`onPause`, `onStop` and )`OnDestroy` are invoked when transitioning to *Activity shutdown*.
+`onPause`, `onStop` and `OnDestroy` are invoked when transitioning to *Activity shutdown*.
 
 `onStop` is invoked when transitioning to *App process killed*.
 

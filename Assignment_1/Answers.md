@@ -23,8 +23,8 @@ public float getValueRange(int sensorId){
   Sensor mSensor = null;
   SensorManager mgr = (SensorManager) getSystemService(SENSOR_SERVICE);
 
-  if (mgr.getDefaultSensor(sensorId) != null){
-    mSensor = mgr.getDefaultSensor(sensorId);
+  if (mgr.getDefaultSensor(Sensor.sensorId) != null){
+    mSensor = mgr.getDefaultSensor(Sensor.sensorId);
     return mSensor.getMaximumRange();
   }
   else{
@@ -44,16 +44,14 @@ public void accelMaxRate(){
 
 ### B)
 
-1. A problem may occur when logging the values. The `onSensorChanged(SensorEvent event)` function is called all the time because the the values of the accelerometer change all the time. Thus when the `log(int type, float[] values)` is called (which takes some time to complete) we could run into issues with things like the order in which the events are logged or some logs might get lost. Also because the `log` function takes some time and is called at every change of sensor values (especially accelerometer values) the phone could get very slow.
+A problem may occur when logging the values. The `onSensorChanged(SensorEvent event)` function is called all the time because the the values of the accelerometer change all the time. Thus when the `log(int type, float[] values)` is called (which takes some time to complete) we could run into issues with things like the order in which the events are logged or some logs might get lost. Also because the `log` function takes some time and is called at every change of sensor values (especially accelerometer values) the phone could get very slow.
 
 ## Question 2:
-`onCreate`, `onStart` and `OnResume` are invoked when transitioning to *Activity Running*.
+The state "Running" uses the callback function `onResume()`
 
-`onPause`, `onStop` and `OnDestroy` are invoked when transitioning to *Activity shutdown*.
+The state "Paused" uses the callback function `onPause()`
 
-`onStop` is invoked when transitioning to *App process killed*.
-
-Those functions in parenthesis are invoked before the transition but not the last function before transitioning.
+The state "Stopped" uses the callback function `onStop()`
 
 ## Question 3:
 They should be defined in `res/values/strings.xml`
@@ -68,15 +66,23 @@ From the android documentation:
 *Explicit intents* are used to launch a new activity in an app and may send some data to the new activity
 
 *Implicit intents* are used when we want to send data or switch to an inbuilt android activity. For that we must exactly specify which inbuilt activity we want to call. Examples for inbuilt activities are:
+
 - Browser
+
 - Camera
+
 - Contact
+
 - Dialpad
 
 ## Question 5:
+
 a) false
+
 b) true
+
 c) true
+
 d) false
 
 ## Question 6:

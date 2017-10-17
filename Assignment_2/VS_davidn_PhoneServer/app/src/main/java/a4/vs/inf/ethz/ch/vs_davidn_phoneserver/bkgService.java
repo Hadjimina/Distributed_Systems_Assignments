@@ -15,6 +15,7 @@ public class bkgService extends Service {
     private Server mServer;
     private String mIP;
     private int mPort;
+    private Helper mHelper;
 
     @Nullable
     @Override
@@ -25,9 +26,11 @@ public class bkgService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        mServer = new Server();
-        mIP = mServer.getIpAddress();
-        mPort = mServer.getPort();
+        mHelper = new Helper();
+        mIP = mHelper.getIpAddress();
+        mPort = mHelper.getPort();
+        mServer = new Server(mPort, getAssets());
+
 
         Log.i("SERVICE","started"+mIP+":"+mPort);
 

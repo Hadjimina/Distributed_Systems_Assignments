@@ -1,47 +1,141 @@
 package a4.vs.inf.ethz.ch.vs_davidn_phoneserver;
 
-import android.util.Log;
+import android.content.res.AssetManager;
+import android.text.TextUtils;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.OutputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintStream;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketException;
-import java.util.Enumeration;
 
 /**
  * Created by philipp on 15.10.17.
  */
-//http://androidsrc.net/android-client-server-using-sockets-server-implementation/
+//Simplify & beautify
+//https://www.journaldev.com/10356/android-broadcastreceiver-example-tutorial
 
 public class Server {
 
     ServerSocket serverSocket;
     String message = "";
-    static final int socketServerPORT = 8080;
 
-    public Server() {
+    private final AssetManager mAssets;
+    private final int mPort;
+
+    public Server(int port, AssetManager assets) {
+        mPort = port;
+        mAssets = assets;
+
         Thread socketServerThread = new Thread(new SocketServerThread());
         socketServerThread.start();
     }
 
-    public int getPort() {
-        return socketServerPORT;
+    public int getPort(){
+        return mPort;
     }
 
     public void onDestroy() {
         if (serverSocket != null) {
             try {
                 serverSocket.close();
-                Log.i("SERVER asdf", "closed");
             } catch (IOException e) {
-                // TODO Auto-generated catch block
-                Log.i("SERVER asdf", "not closed");
                 e.printStackTrace();
             }
+        }
+    }
+
+    private void handle(Socket socket) throws IOException {
+        BufferedReader reader = null;
+        PrintStream output = null;
+        try {
+            String route = null;
+
+            // Read HTTP headers and parse out the route.
+            reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            String line;
+            while (!TextUtils.isEmpty(line = reader.readLine())) {
+                System.out.println(line);
+                if (line.startsWith("GET /")) {
+                    int start = line.indexOf('/') + 1;
+                    int end = line.indexOf(' ', start);
+                    route = line.substring(start, end);
+                    break;
+                }
+            }
+
+            // Output stream that we send the response to
+            output = new PrintStream(socket.getOutputStream());
+
+            // Prepare the content to send.
+            if (null == route) {
+                writeServerError(output);
+                return;
+            }
+            byte[] bytes = loadContent(route);
+            if (null == bytes) {
+                writeServerError(output);
+                return;
+            }
+
+            // Send out the content.
+            output.println("HTTP/1.0 200 OK");
+            output.println("Content-Type: " + detectMimeType(route));
+            output.println("Content-Length: " + bytes.length);
+            output.println();
+            output.write(bytes);
+            output.flush();
+        } finally {
+            if (null != output) {
+                output.close();
+            }
+            if (null != reader) {
+                reader.close();
+            }
+        }
+    }
+
+    private void writeServerError(PrintStream output) {
+        output.println("HTTP/1.0 500 Internal Server Error");
+        output.flush();
+    }
+
+    private byte[] loadContent(String fileName) throws IOException {
+        InputStream input = null;
+        try {
+            ByteArrayOutputStream output = new ByteArrayOutputStream();
+            input = mAssets.open(fileName);
+            byte[] buffer = new byte[1024];
+            int size;
+            while (-1 != (size = input.read(buffer))) {
+                output.write(buffer, 0, size);
+            }
+            output.flush();
+            return output.toByteArray();
+        } catch (FileNotFoundException e) {
+            return null;
+        } finally {
+            if (null != input) {
+                input.close();
+            }
+        }
+    }
+
+    private String detectMimeType(String fileName) {
+        if (TextUtils.isEmpty(fileName)) {
+            return null;
+        } else if (fileName.endsWith(".html")) {
+            return "text/html";
+        } else if (fileName.endsWith(".js")) {
+            return "application/javascript";
+        } else if (fileName.endsWith(".css")) {
+            return "text/css";
+        } else {
+            return "application/octet-stream";
         }
     }
 
@@ -53,7 +147,7 @@ public class Server {
         public void run() {
             try {
                 // create ServerSocket using specified port
-                serverSocket = new ServerSocket(socketServerPORT);
+                serverSocket = new ServerSocket(mPort);
 
                 while (true) {
                     // block the call until connection is created and return
@@ -96,79 +190,15 @@ public class Server {
 
         @Override
         public void run() {
-            OutputStream outputStream;
-            String msgReply = "<!DOCTYPE html>\n" +
-                    "<html>\n" +
-                    "<body>\n" +
-                    "\n" +
-                    "<h1>My First Heading</h1>\n" +
-                    "<p>My first paragraph.</p>\n" +
-                    "\n" +
-                    "</body>\n" +
-                    "</html>";
 
             try {
-                outputStream = hostThreadSocket.getOutputStream();
-                PrintStream printStream = new PrintStream(outputStream);
-                printStream.print(msgReply);
-                printStream.close();
-
-                message += "replayed: " + msgReply + "\n";
-
-                final Runnable r1 = (new Runnable() {
-
-                    @Override
-                    public void run() {
-                        System.out.println(message);
-                    }
-                });
-                r1.run();
-
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
+                handle(hostThreadSocket);
+            }catch (IOException e){
                 e.printStackTrace();
-                message += "Something wrong! " + e.toString() + "\n";
+                System.out.println("ERROR");
             }
-
-            final Runnable r2 = (new Runnable() {
-
-                @Override
-                public void run() {
-                    System.out.println(message);
-
-                }
-            });
-            r2.run();
         }
 
     }
 
-    public String getIpAddress() {
-        String ip = "";
-        try {
-            Enumeration<NetworkInterface> enumNetworkInterfaces = NetworkInterface
-                    .getNetworkInterfaces();
-            while (enumNetworkInterfaces.hasMoreElements()) {
-                NetworkInterface networkInterface = enumNetworkInterfaces
-                        .nextElement();
-                Enumeration<InetAddress> enumInetAddress = networkInterface
-                        .getInetAddresses();
-                while (enumInetAddress.hasMoreElements()) {
-                    InetAddress inetAddress = enumInetAddress
-                            .nextElement();
-
-                    if (inetAddress.isSiteLocalAddress()) {
-                        ip += "Server running at : "
-                                + inetAddress.getHostAddress();
-                    }
-                }
-            }
-
-        } catch (SocketException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            ip += "Something Wrong! " + e.toString() + "\n";
-        }
-        return ip;
-    }
 }

@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
                     mStateValue.setText(mHelper.getIpAddress()+":"+mHelper.getPort()+"/index.html");
-                    mStateValue.setTextColor(Color.GREEN);
+                    mStateValue.setTextColor(Color.BLACK);
                     startService(startService);
 
                 }else{

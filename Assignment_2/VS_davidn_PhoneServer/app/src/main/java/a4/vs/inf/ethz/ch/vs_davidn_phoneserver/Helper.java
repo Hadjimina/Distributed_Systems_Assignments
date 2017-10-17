@@ -32,7 +32,7 @@ public class Helper {
                             .nextElement();
 
                     if (inetAddress.isSiteLocalAddress()) {
-                        ip += "Server running at : "
+                        ip += "Server running at :\n"
                                 + inetAddress.getHostAddress();
                     }
                 }

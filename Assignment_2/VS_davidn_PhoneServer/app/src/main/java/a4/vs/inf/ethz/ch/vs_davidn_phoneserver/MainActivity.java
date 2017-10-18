@@ -7,6 +7,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import a4.vs.inf.ethz.ch.vs_davidn_phoneserver.task1and2.RestClientActivity;
+import a4.vs.inf.ethz.ch.vs_davidn_phoneserver.task1and2.SoapClientActivity;
+import a4.vs.inf.ethz.ch.vs_davidn_phoneserver.task3.ServerActivity;
+
 public class MainActivity extends AppCompatActivity implements Button.OnClickListener{
 
     @Override

@@ -1,10 +1,12 @@
-package a4.vs.inf.ethz.ch.vs_davidn_phoneserver;
+package a4.vs.inf.ethz.ch.vs_davidn_phoneserver.task3;
 
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
+
+import a4.vs.inf.ethz.ch.vs_davidn_phoneserver.Helper;
 
 /**
  * Created by philipp on 15.10.17.

@@ -1,7 +1,12 @@
 package a4.vs.inf.ethz.ch.vs_davidn_phoneserver;
 
+import android.content.Context;
 import android.content.res.AssetManager;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Vibrator;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
@@ -23,13 +28,15 @@ public class Server {
 
     ServerSocket serverSocket;
     String message = "";
+    Context context;
 
     private final AssetManager mAssets;
     private final int mPort;
 
-    public Server(int port, AssetManager assets) {
+    public Server(int port, AssetManager assets, Context context) {
         mPort = port;
         mAssets = assets;
+        this.context = context;
 
         Thread socketServerThread = new Thread(new SocketServerThread());
         socketServerThread.start();
@@ -59,25 +66,46 @@ public class Server {
             reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             String line;
             while (!TextUtils.isEmpty(line = reader.readLine())) {
-                System.out.println(line);
-                if (line.startsWith("GET /")) {
-                    int start = line.indexOf('/') + 1;
-                    int end = line.indexOf(' ', start);
+                System.out.println("LINE IS :"+line);
+                int start,end;
+                start = line.indexOf('/') + 1;
+
+                if (line.startsWith("GET /") && !line.contains("execute")) {
+                    end = line.indexOf(' ', start);
+                    route = line.substring(start, end);
+                    break;
+                }else if(line.startsWith("GET /") && line.contains("execute=Vibrate+phone")){
+                    vibratePhone();
+                    end = line.indexOf('?', start);
                     route = line.substring(start, end);
                     break;
                 }
+                else if(line.startsWith("GET /") && line.contains("execute=Show+toast+on+phone")){
+                    showToast();
+                    end = line.indexOf('?', start);
+                    route = line.substring(start, end);
+                    break;
+                }
+
+
             }
 
+            System.out.println("route is "+route);
             // Output stream that we send the response to
             output = new PrintStream(socket.getOutputStream());
 
             // Prepare the content to send.
             if (null == route) {
+                System.out.print("ERROR route is null");
                 writeServerError(output);
                 return;
             }
+
+
+
             byte[] bytes = loadContent(route);
             if (null == bytes) {
+                System.out.print("ERROR bytes is null");
                 writeServerError(output);
                 return;
             }
@@ -97,6 +125,23 @@ public class Server {
                 reader.close();
             }
         }
+    }
+
+    public void vibratePhone(){
+        Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        v.vibrate(1000);
+
+    }
+
+    public void showToast(){
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.post(new Runnable() {
+
+            @Override
+            public void run() {
+                Toast.makeText(context,"Hello from the Interwebz",Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     private void writeServerError(PrintStream output) {

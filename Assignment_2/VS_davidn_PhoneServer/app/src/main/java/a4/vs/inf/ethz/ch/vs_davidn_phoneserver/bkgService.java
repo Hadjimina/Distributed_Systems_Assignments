@@ -29,7 +29,7 @@ public class bkgService extends Service {
         mHelper = new Helper();
         mIP = mHelper.getIpAddress();
         mPort = mHelper.getPort();
-        mServer = new Server(mPort, getAssets());
+        mServer = new Server(mPort, getAssets(),getApplicationContext());
 
 
         Log.i("SERVICE","started"+mIP+":"+mPort);

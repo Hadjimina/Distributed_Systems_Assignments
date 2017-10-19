@@ -1,4 +1,4 @@
-package a4.vs.inf.ethz.ch.vs_davidn_phoneserver;
+package a4.vs.inf.ethz.ch.vs_davidn_phoneserver.task3;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -7,6 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+
+import a4.vs.inf.ethz.ch.vs_davidn_phoneserver.Helper;
+import a4.vs.inf.ethz.ch.vs_davidn_phoneserver.R;
 
 public class ServerActivity extends AppCompatActivity {
 

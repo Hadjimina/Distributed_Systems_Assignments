@@ -1,4 +1,4 @@
-package a4.vs.inf.ethz.ch.vs_davidn_phoneserver;
+package a4.vs.inf.ethz.ch.vs_davidn_phoneserver.task3;
 
 import android.content.Context;
 import android.content.res.AssetManager;

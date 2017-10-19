@@ -18,7 +18,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ServerActivity">
+        <activity android:name=".task3.ServerActivity">
             <intent-filter>
                 <action android:name="android.intent.action.CALL" />
 
@@ -27,11 +27,11 @@
         </activity>
 
         <service
-            android:name=".bkgService"
+            android:name=".task3.bkgService"
             android:label="Background Service" />
 
-        <activity android:name=".RestClientActivity" />
-        <activity android:name=".SoapClientActivity"></activity>
+        <activity android:name=".task1and2.RestClientActivity" />
+        <activity android:name=".task1and2.SoapClientActivity"></activity>
     </application>
 
 </manifest>

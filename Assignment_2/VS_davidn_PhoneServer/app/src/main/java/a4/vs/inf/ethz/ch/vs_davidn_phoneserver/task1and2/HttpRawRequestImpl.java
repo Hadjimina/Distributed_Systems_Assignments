@@ -14,7 +14,6 @@ public class HttpRawRequestImpl implements HttpRawRequest {
         sb.append("Accept: text/html" + "\r\n");
         sb.append("Connection: close" + "\r\n" + "\r\n");
 
-
         return sb.toString();
     }
 }

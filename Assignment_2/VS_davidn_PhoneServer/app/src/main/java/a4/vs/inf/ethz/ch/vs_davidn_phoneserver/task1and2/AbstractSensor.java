@@ -23,7 +23,7 @@ public abstract class AbstractSensor implements a4.vs.inf.ethz.ch.vs_davidn_phon
     }
 
     @Override
-    public void unregisterListener(SensorListener listener) {
+    public void unregisterListener(a4.vs.inf.ethz.ch.vs_davidn_phoneserver.task1and2.SensorListener listener) {
         listeners.remove(listener);
     }
 

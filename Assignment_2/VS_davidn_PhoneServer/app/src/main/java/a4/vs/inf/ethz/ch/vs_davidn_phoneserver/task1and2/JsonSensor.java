@@ -1,12 +1,10 @@
 package a4.vs.inf.ethz.ch.vs_davidn_phoneserver.task1and2;
 
-import android.hardware.SensorListener;
-
 /**
  * Created by jzfri on 18.10.2017.
  */
 
-class JsonSensor implements Sensor {
+class JsonSensor extends AbstractSensor {
     @Override
     public String executeRequest() throws Exception {
         return null;
@@ -22,10 +20,6 @@ class JsonSensor implements Sensor {
 
     }
 
-    @Override
-    public void registerListener(SensorListener listener) {
-
-    }
 
     @Override
     public void registerListener(a4.vs.inf.ethz.ch.vs_davidn_phoneserver.task1and2.SensorListener listener) {
@@ -33,7 +27,7 @@ class JsonSensor implements Sensor {
     }
 
     @Override
-    public void unregisterListener(SensorListener listener) {
+    public void unregisterListener(a4.vs.inf.ethz.ch.vs_davidn_phoneserver.task1and2.SensorListener listener) {
 
     }
 }

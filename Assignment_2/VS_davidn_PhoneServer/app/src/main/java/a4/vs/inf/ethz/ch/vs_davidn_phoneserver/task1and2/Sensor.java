@@ -1,7 +1,5 @@
 package a4.vs.inf.ethz.ch.vs_davidn_phoneserver.task1and2;
 
-import android.hardware.SensorListener;
-
 /**
  * A sensor representation that provides temperature measurements. 
  * 
@@ -38,13 +36,12 @@ public interface Sensor {
 	 * Register a SensorListener to this sensor.
 	 * @param listener The SensorListener to be registered
 	 */
-	public void registerListener(SensorListener listener);
+	public void registerListener(a4.vs.inf.ethz.ch.vs_davidn_phoneserver.task1and2.SensorListener listener);
 
-	void registerListener(a4.vs.inf.ethz.ch.vs_davidn_phoneserver.task1and2.SensorListener listener);
 
 	/**
 	 * Unregister a SensorListener from this sensor.
 	 * @param listener The SensorListener to be unregistered
 	 */
-	public void unregisterListener(SensorListener listener);
+	public void unregisterListener(a4.vs.inf.ethz.ch.vs_davidn_phoneserver.task1and2.SensorListener listener);
 }

@@ -36,7 +36,7 @@ public class ServerActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
-                    mStateValue.setText(mHelper.getIpAddress()+":"+mHelper.getPort()+"/index.html");
+                    mStateValue.setText(mHelper.getIpAddress()+":"+mHelper.getPort());
                     mStateValue.setTextColor(Color.BLACK);
                     startService(startService);
 

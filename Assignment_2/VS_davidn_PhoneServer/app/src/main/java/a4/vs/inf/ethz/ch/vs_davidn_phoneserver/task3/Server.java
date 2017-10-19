@@ -2,6 +2,10 @@ package a4.vs.inf.ethz.ch.vs_davidn_phoneserver.task3;
 
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Vibrator;
@@ -24,7 +28,7 @@ import java.net.Socket;
 //Simplify & beautify
 //https://www.journaldev.com/10356/android-broadcastreceiver-example-tutorial
 
-public class Server {
+public class Server implements SensorEventListener {
 
     ServerSocket serverSocket;
     String message = "";
@@ -32,11 +36,23 @@ public class Server {
 
     private final AssetManager mAssets;
     private final int mPort;
+    private SensorManager mSensorManager;
+    private Sensor mLight;
+    private Sensor mAccel;
+    private float mLightValue;
+    private String mAccelString;
 
     public Server(int port, AssetManager assets, Context context) {
         mPort = port;
         mAssets = assets;
         this.context = context;
+        mSensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
+        mLight = mSensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
+        mAccel = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
+        //register sensors
+        mSensorManager.registerListener(this, mLight, SensorManager.SENSOR_DELAY_NORMAL);
+        mSensorManager.registerListener(this, mAccel, SensorManager.SENSOR_DELAY_NORMAL);
 
         Thread socketServerThread = new Thread(new SocketServerThread());
         socketServerThread.start();
@@ -50,6 +66,7 @@ public class Server {
         if (serverSocket != null) {
             try {
                 serverSocket.close();
+                mSensorManager.unregisterListener(this);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -70,7 +87,11 @@ public class Server {
                 int start,end;
                 start = line.indexOf('/') + 1;
 
-                if (line.startsWith("GET /") && !line.contains("execute")) {
+                //Default site
+                if(line.startsWith("GET /") && !line.contains(".html")){
+                    route = "index.html";
+                }
+                else if (line.startsWith("GET /") && !line.contains("execute")) {
                     end = line.indexOf(' ', start);
                     route = line.substring(start, end);
                     break;
@@ -103,19 +124,34 @@ public class Server {
 
 
 
-            byte[] bytes = loadContent(route);
-            if (null == bytes) {
+            String site = loadContent(route);
+            if (null == site) {
                 System.out.print("ERROR bytes is null");
                 writeServerError(output);
                 return;
             }
 
+            if(route.contains("sensor1")){
+                StringBuilder sb = new StringBuilder(site);
+                int index = sb.indexOf("%");
+                sb.deleteCharAt(index);
+                sb.insert(index,"Accelerometer: "+mAccelString);
+                site = sb.toString();
+
+            }else if(route.contains("sensor2")){
+                StringBuilder sb = new StringBuilder(site);
+                int index = sb.indexOf("%");
+                sb.deleteCharAt(index);
+                sb.insert(index,"Light: "+mLightValue+" lx");
+                site = sb.toString();
+            }
+
             // Send out the content.
             output.println("HTTP/1.0 200 OK");
             output.println("Content-Type: " + detectMimeType(route));
-            output.println("Content-Length: " + bytes.length);
+            output.println("Content-Length: " + site.getBytes().length);
             output.println();
-            output.write(bytes);
+            output.println(site);
             output.flush();
         } finally {
             if (null != output) {
@@ -149,25 +185,27 @@ public class Server {
         output.flush();
     }
 
-    private byte[] loadContent(String fileName) throws IOException {
-        InputStream input = null;
+    private String loadContent(String fileName) throws IOException {
+        AssetManager assetManager = context.getAssets();
+        InputStream input;
+        String toReturn = "";
+
         try {
-            ByteArrayOutputStream output = new ByteArrayOutputStream();
-            input = mAssets.open(fileName);
-            byte[] buffer = new byte[1024];
-            int size;
-            while (-1 != (size = input.read(buffer))) {
-                output.write(buffer, 0, size);
-            }
-            output.flush();
-            return output.toByteArray();
-        } catch (FileNotFoundException e) {
-            return null;
-        } finally {
-            if (null != input) {
-                input.close();
-            }
+            input = assetManager.open(fileName);
+
+            int size = input.available();
+            byte[] buffer = new byte[size];
+            input.read(buffer);
+            input.close();
+
+            // byte buffer into a string
+            toReturn = new String(buffer);
+
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
+        return toReturn;
     }
 
     private String detectMimeType(String fileName) {
@@ -182,6 +220,23 @@ public class Server {
         } else {
             return "application/octet-stream";
         }
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent sensorEvent) {
+        int sensorType = sensorEvent.sensor.getType();
+
+        if(sensorType == Sensor.TYPE_LIGHT){
+            mLightValue = sensorEvent.values[0];
+        }else if(sensorType == Sensor.TYPE_ACCELEROMETER){
+            mAccelString = String.format("<br />x: %.3f m/s^2<br />y: %.3f m/s^2<br />z: %.3f m/s^2", sensorEvent.values[0], sensorEvent.values[1], sensorEvent.values[2] );
+        }
+
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i) {
+        //Do nothing
     }
 
     private class SocketServerThread extends Thread {

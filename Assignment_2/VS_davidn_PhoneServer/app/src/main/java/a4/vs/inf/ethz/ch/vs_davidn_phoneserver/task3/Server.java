@@ -13,8 +13,6 @@ import android.text.TextUtils;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -54,8 +52,8 @@ public class Server implements SensorEventListener {
         mSensorManager.registerListener(this, mLight, SensorManager.SENSOR_DELAY_NORMAL);
         mSensorManager.registerListener(this, mAccel, SensorManager.SENSOR_DELAY_NORMAL);
 
-        Thread socketServerThread = new Thread(new SocketServerThread());
-        socketServerThread.start();
+        Thread serverThread = new Thread(new serverThread());
+        serverThread.start();
     }
 
     public int getPort(){
@@ -76,12 +74,13 @@ public class Server implements SensorEventListener {
     private void handle(Socket socket) throws IOException {
         BufferedReader reader = null;
         PrintStream output = null;
+
         try {
             String route = null;
 
-            // Read HTTP headers and parse out the route.
             reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             String line;
+
             while (!TextUtils.isEmpty(line = reader.readLine())) {
                 System.out.println("LINE IS :"+line);
                 int start,end;
@@ -112,13 +111,11 @@ public class Server implements SensorEventListener {
             }
 
             System.out.println("route is "+route);
-            // Output stream that we send the response to
             output = new PrintStream(socket.getOutputStream());
 
-            // Prepare the content to send.
             if (null == route) {
                 System.out.print("ERROR route is null");
-                writeServerError(output);
+                serverError(output);
                 return;
             }
 
@@ -127,7 +124,7 @@ public class Server implements SensorEventListener {
             String site = loadContent(route);
             if (null == site) {
                 System.out.print("ERROR bytes is null");
-                writeServerError(output);
+                serverError(output);
                 return;
             }
 
@@ -146,7 +143,6 @@ public class Server implements SensorEventListener {
                 site = sb.toString();
             }
 
-            // Send out the content.
             output.println("HTTP/1.0 200 OK");
             output.println("Content-Type: " + detectMimeType(route));
             output.println("Content-Length: " + site.getBytes().length);
@@ -180,9 +176,11 @@ public class Server implements SensorEventListener {
         });
     }
 
-    private void writeServerError(PrintStream output) {
+    private void serverError(PrintStream output) {
+
         output.println("HTTP/1.0 500 Internal Server Error");
         output.flush();
+
     }
 
     private String loadContent(String fileName) throws IOException {
@@ -198,7 +196,6 @@ public class Server implements SensorEventListener {
             input.read(buffer);
             input.close();
 
-            // byte buffer into a string
             toReturn = new String(buffer);
 
         } catch (IOException e) {
@@ -239,24 +236,18 @@ public class Server implements SensorEventListener {
         //Do nothing
     }
 
-    private class SocketServerThread extends Thread {
+    private class serverThread extends Thread {
 
         int count = 0;
 
         @Override
         public void run() {
             try {
-                // create ServerSocket using specified port
                 serverSocket = new ServerSocket(mPort);
 
                 while (true) {
-                    // block the call until connection is created and return
-                    // Socket object
                     Socket socket = serverSocket.accept();
                     count++;
-                    message += "#" + count + " from "
-                            + socket.getInetAddress() + ":"
-                            + socket.getPort() + "\n";
 
                     final Runnable r3 = new Runnable() {
                         @Override
@@ -266,9 +257,9 @@ public class Server implements SensorEventListener {
                     };
                     r3.run();
 
-                    SocketServerReplyThread socketServerReplyThread =
-                            new SocketServerReplyThread(socket, count);
-                    socketServerReplyThread.run();
+                    replyThread replyThread =
+                            new replyThread(socket, count);
+                    replyThread.run();
 
                 }
             } catch (IOException e) {
@@ -278,12 +269,12 @@ public class Server implements SensorEventListener {
         }
     }
 
-    private class SocketServerReplyThread extends Thread {
+    private class replyThread extends Thread {
 
         private Socket hostThreadSocket;
         int cnt;
 
-        SocketServerReplyThread(Socket socket, int c) {
+        replyThread(Socket socket, int c) {
             hostThreadSocket = socket;
             cnt = c;
         }

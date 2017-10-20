@@ -26,8 +26,18 @@ public class ServerActivity extends AppCompatActivity {
         mServerToggle = (ToggleButton) findViewById(R.id.toggleServer);
         mHelper = new Helper();
 
-        mStateValue.setText("Not running");
-        mStateValue.setTextColor(Color.RED);
+        //Check if service is running
+        boolean isRunning = mHelper.serviceIsRunning(bkgService.class, getApplicationContext());
+        if(isRunning){
+            mStateValue.setText(mHelper.getIpAddress()+":"+mHelper.getPort());
+            mStateValue.setTextColor(Color.BLACK);
+            mServerToggle.setChecked(true);
+        }else{
+            mStateValue.setText("Not running");
+            mStateValue.setTextColor(Color.RED);
+        }
+
+
 
         final Intent startService = new Intent(this, bkgService.class);
 

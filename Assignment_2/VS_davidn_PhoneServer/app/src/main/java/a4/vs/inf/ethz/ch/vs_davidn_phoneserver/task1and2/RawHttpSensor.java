@@ -1,6 +1,9 @@
 package a4.vs.inf.ethz.ch.vs_davidn_phoneserver.task1and2;
 
+import android.util.Log;
+
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -10,32 +13,40 @@ import java.net.Socket;
  */
 
 class RawHttpSensor extends AbstractSensor {
-    String host = "vslab.ethz.ch";
+    String host = "vslab.inf.ethz.ch";
     String path = "/sunspots/Spot1/sensors/temperature";
     int port = 8081;
-    Socket skt;
 
 
     @Override
     public String executeRequest() throws Exception {
-
+        Log.d("#", "doInBackground from RawHttpSensor has started");
+        String response = "";
         HttpRawRequestImpl rawRequest = new HttpRawRequestImpl();
         String request = rawRequest.generateRequest(host, port, path);
-        skt = new Socket(host, port);
+        Socket skt;
+        try {
+            skt = new Socket(host, port);
+            PrintWriter out = new PrintWriter(skt.getOutputStream(), false);
 
-        PrintWriter out = new PrintWriter(skt.getOutputStream(), false);
-        //write request to socket outputStream
-        out.print(rawRequest);
-        out.flush();
+            //write request to socket outputStream
+            out.print(request);
+            out.flush();
 
-        BufferedReader in = new BufferedReader(new InputStreamReader(skt.getInputStream()));
+            BufferedReader in = new BufferedReader(new InputStreamReader(skt.getInputStream()));
 
-        String userInput;
-        String response = "";
+            String userInput;
 
-        while((userInput = in.readLine()) != null) {
-            response += userInput + "\r\n";
+
+            while((userInput = in.readLine()) != null) {
+                response += userInput + "\r\n";
+            }
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        Log.d("#", "got a response");
         return response;
     }
 
@@ -52,20 +63,5 @@ class RawHttpSensor extends AbstractSensor {
             temperature = response.substring(startIndex, endIndex);
         }
         return Double.parseDouble(temperature);
-    }
-
-    @Override
-    public void getTemperature() {
-
-    }
-
-    @Override
-    public void registerListener(a4.vs.inf.ethz.ch.vs_davidn_phoneserver.task1and2.SensorListener listener) {
-
-    }
-
-    @Override
-    public void unregisterListener(a4.vs.inf.ethz.ch.vs_davidn_phoneserver.task1and2.SensorListener listener) {
-
     }
 }

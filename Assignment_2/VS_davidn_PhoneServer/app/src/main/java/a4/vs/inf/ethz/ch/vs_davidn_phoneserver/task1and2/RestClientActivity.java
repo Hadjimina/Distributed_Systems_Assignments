@@ -12,36 +12,53 @@ public class RestClientActivity extends AppCompatActivity implements SensorListe
     RawHttpSensor httpSensor;
     TextSensor textSensor;
     JsonSensor jsonSensor;
-    TextView txt;
+    TextView txt1;
+    TextView txt2;
+    TextView txt3;
+    int sensorIterator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rest_client);
 
-        //initialize RawHttpSensor
-        //httpSensor = new RawHttpSensor();
-        //httpSensor.registerListener(this);
-        //httpSensor.getTemperature();
+        //initialize TextViews
+        txt1 = (TextView) findViewById(R.id.httpRawSensorTxt);
+        txt1.setText("Temperature from HttpRawSensor: 0.0");
+        txt2 = (TextView) findViewById(R.id.textSensorText);
+        txt2.setText("Temperature from TextSensor: 0.0");
+        txt3 = (TextView) findViewById(R.id.jsonSensorTxt);
+        txt3.setText("Temperature from JsonSensor: 0.0");
 
-        //textSensor = new TextSensor();
-        //textSensor.registerListener(this);
-        //textSensor.getTemperature();
+        //initialize Sensors
+
+        httpSensor = new RawHttpSensor();
+        httpSensor.registerListener(this);
+        sensorIterator = 1;
+        httpSensor.getTemperature();
+
+        textSensor = new TextSensor();
+        textSensor.registerListener(this);
+        sensorIterator = 2;
+        textSensor.getTemperature();
 
         jsonSensor = new JsonSensor();
         jsonSensor.registerListener(this);
+        sensorIterator = 3;
         jsonSensor.getTemperature();
-
-        //initialize TextView
-        txt = (TextView) findViewById(R.id.httpRawSensorTxt);
-        txt.setText("Temperature: " + temperature);
     }
 
     @Override
     public void onReceiveSensorValue(double value) {
         Log.d("#", "temperature ist updated.");
         temperature = value;
-        txt.setText("Temperature: " + value);
+        if(sensorIterator == 1){
+            txt1.setText("Temperature from RawHttpSensor: " + value);
+        }else if(sensorIterator == 2){
+            txt2.setText("Temperature from TextSensor: " + value);
+        }else if(sensorIterator == 3){
+            txt3.setText("Temperature from JsonSensor: " + value);
+        }
     }
 
     @Override

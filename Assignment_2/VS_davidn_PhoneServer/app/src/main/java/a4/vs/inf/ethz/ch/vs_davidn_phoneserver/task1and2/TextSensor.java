@@ -26,7 +26,6 @@ class TextSensor extends AbstractSensor {
         urlConnection.setRequestMethod("GET");
 
         BufferedReader in = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-
         String userInput;
         while((userInput = in.readLine()) != null) {
             response += userInput + "\r\n";

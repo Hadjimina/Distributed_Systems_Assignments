@@ -34,15 +34,10 @@ class RawHttpSensor extends AbstractSensor {
             out.flush();
 
             BufferedReader in = new BufferedReader(new InputStreamReader(skt.getInputStream()));
-
             String userInput;
-
-
             while((userInput = in.readLine()) != null) {
                 response += userInput + "\r\n";
             }
-
-
         } catch (IOException e) {
             e.printStackTrace();
         }

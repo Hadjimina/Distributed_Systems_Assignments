@@ -1,5 +1,9 @@
 package a4.vs.inf.ethz.ch.vs_davidn_phoneserver.task1and2;
 
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.IOException;
+
 /**
  * A sensor representation that provides temperature measurements. 
  * 
@@ -24,7 +28,7 @@ public interface Sensor {
 	 *
 	 * @return Parsed sensor value or {@link Double#NaN} if parsing fails
      */
-	public double parseResponse(String response);
+	public double parseResponse(String response) throws XmlPullParserException, IOException;
 
 	/**
 	 * Invoke request to fetch temperature value.

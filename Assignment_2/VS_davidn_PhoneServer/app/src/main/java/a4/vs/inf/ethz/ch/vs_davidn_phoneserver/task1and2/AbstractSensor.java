@@ -4,6 +4,9 @@ import android.hardware.Sensor;
 import android.hardware.SensorListener;
 import android.os.AsyncTask;
 
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,7 +87,13 @@ public abstract class AbstractSensor implements a4.vs.inf.ethz.ch.vs_davidn_phon
         @Override
         protected void onPostExecute(String result) {
             if (result != null)
-                sendValue(parseResponse(result));
+                try {
+                    sendValue(parseResponse(result));
+                } catch (XmlPullParserException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
         }
     }
 }

@@ -14,19 +14,4 @@ class SoapSensor extends AbstractSensor {
     public double parseResponse(String response) {
         return 0;
     }
-
-    @Override
-    public void getTemperature() {
-
-    }
-
-    @Override
-    public void registerListener(a4.vs.inf.ethz.ch.vs_davidn_phoneserver.task1and2.SensorListener listener) {
-
-    }
-
-    @Override
-    public void unregisterListener(a4.vs.inf.ethz.ch.vs_davidn_phoneserver.task1and2.SensorListener listener) {
-
-    }
 }

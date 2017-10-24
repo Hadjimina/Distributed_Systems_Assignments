@@ -26,19 +26,15 @@ class SoapSensor extends AbstractSensor {
         request.addProperty("id", "Spot3");
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         envelope.setOutputSoapObject(request);
-        envelope.implicitTypes = true;
-        envelope.setAddAdornments(false);
         Log.d("#", "envelope initialized");
 
         HttpTransportSE httpTransportSE = new HttpTransportSE(Proxy.NO_PROXY,URL,60000);
-        httpTransportSE.debug = true;
-        httpTransportSE.setXmlVersionTag("<!--?xml version=\"1.0\" encoding= \"UTF-8\" ?-->");
         httpTransportSE.call(URL, envelope);
         Log.d("#", "http call done");
 
         try {
-            SoapObject result = (SoapObject) envelope.getResponse();
-            String temp = result.getProperty(5).toString();
+            SoapObject response = (SoapObject) envelope.getResponse();
+            String temp = response.getProperty(5).toString();
             Log.d("#", "result is: " + temp);
             return temp;
 

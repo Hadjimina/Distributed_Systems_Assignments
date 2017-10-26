@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ch.inf.vs.a3.vsdavidnchat" >
+    package="ch.ethz.inf.vs.a3.vsdavidnchat" >
 
     <application
         android:allowBackup="true"

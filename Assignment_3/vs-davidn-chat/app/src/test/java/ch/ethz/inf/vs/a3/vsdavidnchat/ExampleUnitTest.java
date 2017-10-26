@@ -1,4 +1,4 @@
-package ch.inf.vs.a3.vsdavidnchat;
+package ch.ethz.inf.vs.a3.vsdavidnchat;
 
 import org.junit.Test;
 

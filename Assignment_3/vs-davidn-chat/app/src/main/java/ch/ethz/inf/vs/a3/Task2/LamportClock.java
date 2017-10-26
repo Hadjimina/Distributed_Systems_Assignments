@@ -47,6 +47,10 @@ public class LamportClock implements Clock{
         this.time = Integer.parseInt(clock);
     }
 
+    public void setTime(int time){
+        this.time = time;
+    }
+
 
 
     public int getTime() {

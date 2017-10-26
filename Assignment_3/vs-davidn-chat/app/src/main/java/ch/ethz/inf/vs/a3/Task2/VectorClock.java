@@ -6,5 +6,5 @@ import ch.ethz.inf.vs.a3.clock.Clock;
  * Created by david on 26.10.17.
  */
 
- abstract class VectorClock implements Clock {
+ public abstract class VectorClock implements Clock {
 }

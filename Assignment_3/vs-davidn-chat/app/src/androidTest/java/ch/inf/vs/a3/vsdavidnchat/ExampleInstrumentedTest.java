@@ -1,4 +1,4 @@
-package a3.vs.inf.ch.vsdavidnchat;
+package ch.inf.vs.a3.vsdavidnchat;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("a3.vs.inf.ch.vsdavidnchat", appContext.getPackageName());
+        assertEquals("ch.inf.vs.a3.vsdavidnchat", appContext.getPackageName());
     }
 }

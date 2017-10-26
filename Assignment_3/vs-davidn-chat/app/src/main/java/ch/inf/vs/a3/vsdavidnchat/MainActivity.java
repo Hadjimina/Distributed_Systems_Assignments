@@ -1,4 +1,4 @@
-package a3.vs.inf.ch.vsdavidnchat;
+package ch.inf.vs.a3.vsdavidnchat;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

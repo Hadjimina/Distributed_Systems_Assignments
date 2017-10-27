@@ -1,7 +1,10 @@
 package ch.ethz.inf.vs.a3.message;
 
+import android.os.Message;
+
 import java.util.Comparator;
-import ch.ethz.inf.vs.a3.solution.message.Message;
+
+;
 
 /**
  * Message comparator class. Use with PriorityQueue.

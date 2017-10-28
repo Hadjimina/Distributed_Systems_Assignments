@@ -14,6 +14,9 @@ import org.json.JSONObject;
 
 import java.util.UUID;
 
+import ch.ethz.inf.vs.a3.message.Message;
+import ch.ethz.inf.vs.a3.message.MessageTypes;
+
 public class MainActivity extends AppCompatActivity implements Button.OnClickListener {
     EditText input;
     Button joinButton;
@@ -47,24 +50,12 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
         uuid = UUID.randomUUID();
 
         //make a registerMessage.
-        JSONObject registerMessage = new JSONObject();
-        JSONObject header = new JSONObject();
-        JSONObject body = new JSONObject();
-        try {
-            header.put("username", username);
-            header.put("uuid", uuid.toString());
-            header.put("timestamp", "{}");
-            header.put("type", "register");
-
-            registerMessage.put("header", header);
-            registerMessage.put("body", body);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        Log.d("#", "message: " + registerMessage.toString());
+        MessageTypes types = new MessageTypes();
+        Message registerMessage = new Message(username, uuid, "{}", types.REGISTER);
+        JSONObject msg = registerMessage.message;
 
         //make new MessageClient to send register message
-        sendCl = new MessageClient(registerMessage, serverAddr, serverPort, username, uuid);
+        sendCl = new MessageClient(msg, serverAddr, serverPort, username, uuid);
         String response = sendCl.doInBackground(null).toString();
         Log.d("#", "response: " + response);
 
@@ -79,25 +70,13 @@ public class MainActivity extends AppCompatActivity implements Button.OnClickLis
 
     public void deregister(){
 
-        //make a deregisterMessage.
-        JSONObject deregisterMessage = new JSONObject();
-        JSONObject header = new JSONObject();
-        JSONObject body = new JSONObject();
-        try {
-            header.put("username", username);
-            header.put("uuid", uuid.toString());
-            header.put("timestamp", "{}");
-            header.put("type", "deregister");
-
-            deregisterMessage.put("header", header);
-            deregisterMessage.put("body", body);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        Log.d("#", "message: " + deregisterMessage.toString());
+        //make deregister Message.
+        MessageTypes types = new MessageTypes();
+        Message deregisterMessage = new Message(username, uuid, "{}", types.DEREGISTER);
+        JSONObject msg = deregisterMessage.message;
 
         //make new MessageClient to send register message
-        sendCl.setMessage(deregisterMessage);
+        sendCl.setMessage(msg);
         String response = sendCl.doInBackground(null).toString();
         Log.d("#", "response: " + response);
     }

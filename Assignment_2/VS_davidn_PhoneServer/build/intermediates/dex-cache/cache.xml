@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="true"
+        jar="/home/philipp/.android/build-cache/e8666c8e6968b15bacb2916d811b822d0b3dbce1/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="45f697922e6f072daa12f8a2995dc77ab03c11da">
+        <dex dex="/home/philipp/Coding/Distributed_Systems_Assignments/Assignment_2/VS_davidn_PhoneServer/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_5a9e43ac9c5d0f1de637f0d5d807dc876677cfca/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/philipp/.android/build-cache/fbb05b703366715b4593301a0ba9214c46f82bf1/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="052f5f840f21174a3ecf6544130194e2652cbb73">
+        <dex dex="/home/philipp/Coding/Distributed_Systems_Assignments/Assignment_2/VS_davidn_PhoneServer/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_fab71daad233f02eea8e2811e9854a143a4018e5/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/philipp/.android/build-cache/ce7c2b69060a6c86961ebae2f519dbf3c18dd290/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="4a26a1154d053ab11aaf4c3967c42a4d66390991">
+        <dex dex="/home/philipp/Coding/Distributed_Systems_Assignments/Assignment_2/VS_davidn_PhoneServer/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_ef6c534033b04fe7dc4958af131188a8eb110df1/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/philipp/.android/build-cache/430bb7b1814f3939fdeb3e35fa8e0ca8f5d90778/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="da27a32db6af8954ee8061537c7d476fcb1df46f">
+        <dex dex="/home/philipp/Coding/Distributed_Systems_Assignments/Assignment_2/VS_davidn_PhoneServer/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_904d635e972be264f0d796463a9be14783911ee0/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/philipp/.android/build-cache/054279e3445586ccdd8a93558d713214eb70793d/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="44ee06abb66da30f5855e6bf54574e64cdcd982a">
+        <dex dex="/home/philipp/Coding/Distributed_Systems_Assignments/Assignment_2/VS_davidn_PhoneServer/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_e79b0b3555012ad00fae3f2f84a32d6ff5192f0a/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/philipp/.android/build-cache/c296bb2d664152f22269aded2556814ae00574a7/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
+        <dex dex="/home/philipp/Coding/Distributed_Systems_Assignments/Assignment_2/VS_davidn_PhoneServer/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_499c325669e4df2ae7c5f6d817d13aaad2429a13/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/philipp/Coding/Distributed_Systems_Assignments/Assignment_2/VS_davidn_PhoneServer/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="3b5f37117e743eefd815c406ea3b84f616708180">
+        <dex dex="/home/philipp/Coding/Distributed_Systems_Assignments/Assignment_2/VS_davidn_PhoneServer/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run-bootstrap_cf93be7cad6b1c2f45fecced3ed22bfe1be80593/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/philipp/Coding/Distributed_Systems_Assignments/Assignment_2/VS_davidn_PhoneServer/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="3be78ebc2706b2e1fe2f12d5726887a92d6c183b">
+        <dex dex="/home/philipp/Coding/Distributed_Systems_Assignments/Assignment_2/VS_davidn_PhoneServer/app/build/intermediates/transforms/dex/debug/folders/1000/10000/instant-run_f3f7e3753365fa6d95abb4fc0186118b9769c5e5/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/philipp/Android/Sdk/extras/m2repository/com/android/support/constraint/constraint-layout-solver/1.0.2/constraint-layout-solver-1.0.2.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="b9cd8fc6bd15cb915735d34535db30ece0c44603">
+        <dex dex="/home/philipp/Coding/Distributed_Systems_Assignments/Assignment_2/VS_davidn_PhoneServer/app/build/intermediates/transforms/dex/debug/folders/1000/10/constraint-layout-solver-1.0.2_551ceffe8060d4accac3699e5163af2ac43d93cf/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/philipp/.android/build-cache/7d8976ee8f382285b79ac50a24e10082ce7f4520/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="efb8cb62d47d157c29d1521daac7eefd4cb881ee">
+        <dex dex="/home/philipp/Coding/Distributed_Systems_Assignments/Assignment_2/VS_davidn_PhoneServer/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_2e90286fd8e1edc1ac369d9e34c8e7cffe6bad0c/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/philipp/.android/build-cache/8b181732ab831ced4405ba1d4d16a82fff847e49/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="6ef31f1555bb4cc513ec8d52711365a8b89f3600">
+        <dex dex="/home/philipp/Coding/Distributed_Systems_Assignments/Assignment_2/VS_davidn_PhoneServer/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_be3c517667f13bd4f8a2b6aed604dcbff6ec397b/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/philipp/.android/build-cache/986a9714040ef75eab66a502fa78aa356c2248c6/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="47635644d0d5c103c1dd8360549eb9ba3225c7d3">
+        <dex dex="/home/philipp/Coding/Distributed_Systems_Assignments/Assignment_2/VS_davidn_PhoneServer/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_608058230074d705d1882bf3a355ee0cc7a455a2/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/philipp/.android/build-cache/baeb29559c41340cbcb6429998945dc1726dde41/output/jars/classes.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="150252b33b00274cc868578ade018fda0d43a3eb">
+        <dex dex="/home/philipp/Coding/Distributed_Systems_Assignments/Assignment_2/VS_davidn_PhoneServer/app/build/intermediates/transforms/dex/debug/folders/1000/10/classes_b258621fc6294ebfdaa3e42d3a067b2b906183df/classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="/home/philipp/Android/Sdk/extras/android/m2repository/com/android/support/support-annotations/25.3.1/support-annotations-25.3.1.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.2"
+        sha1="bf8841d29fa39e077730e7a91222c2ce269fa7c9">
+        <dex dex="/home/philipp/Coding/Distributed_Systems_Assignments/Assignment_2/VS_davidn_PhoneServer/app/build/intermediates/transforms/dex/debug/folders/1000/10/support-annotations-25.3.1_7b308add71984112edd2d5c1bc6c34c4f68e4d07/classes.dex" />
+    </item>
+
+</items>

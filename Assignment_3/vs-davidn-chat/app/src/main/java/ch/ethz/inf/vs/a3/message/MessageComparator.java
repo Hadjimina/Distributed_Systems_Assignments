@@ -11,9 +11,11 @@ import java.util.Comparator;
  */
 public class MessageComparator implements Comparator<Message> {
 
+    //TODO CHANGE CLASS OF MESSAGE
     @Override
     public int compare(Message lhs, Message rhs) {
         // Write your code here
+
 
         return 0;
     }

@@ -10,8 +10,12 @@ public class VectorClockComparator implements Comparator<VectorClock> {
 
     @Override
     public int compare(VectorClock lhs, VectorClock rhs) {
-        // Write your code here
 
-        return 0;
+        if(lhs.happenedBefore(rhs)){
+            return 1;
+        }else{
+            return -1;
+        }
+
     }
 }

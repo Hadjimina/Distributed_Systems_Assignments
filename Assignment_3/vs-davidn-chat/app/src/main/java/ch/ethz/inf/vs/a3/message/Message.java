@@ -13,11 +13,20 @@ import java.util.UUID;
 
 public class Message {
 
-    public JSONObject message;
+    String username, timestamp, type;
+    UUID uuid;
 
     public Message(String username, UUID uuid, String timestamp, String type){
 
-        message = new JSONObject();
+        this.username = username;
+        this.uuid = uuid;
+        this.timestamp = timestamp;
+        this.type = type;
+
+    }
+
+    public JSONObject getJson(){
+        JSONObject json = new JSONObject();
         JSONObject header = new JSONObject();
         JSONObject body = new JSONObject();
         try {
@@ -26,12 +35,14 @@ public class Message {
             header.put("timestamp", timestamp);
             header.put("type", type);
 
-            message.put("header", header);
-            message.put("body", body);
+            json.put("header", header);
+            json.put("body", body);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Log.d("#", "message: " + message.toString());
+
+        Log.d("#", "message: " + json.toString());
+        return json;
     }
 
 }

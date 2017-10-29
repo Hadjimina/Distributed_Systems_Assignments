@@ -52,7 +52,7 @@ public class MainActivity extends MessageClientCallbackClass implements Button.O
         //make a registerMessage.
         MessageTypes types = new MessageTypes();
         Message registerMessage = new Message(username, uuid, "{}", types.REGISTER);
-        JSONObject msg = registerMessage.message;
+        JSONObject msg = registerMessage.getJson();
 
         //make new MessageClient to send register message
         sendCl = new MessageClient(msg, serverAddr, serverPort, username, uuid,this,false);
@@ -74,7 +74,7 @@ public class MainActivity extends MessageClientCallbackClass implements Button.O
         //make deregister Message.
         MessageTypes types = new MessageTypes();
         Message deregisterMessage = new Message(username, uuid, "{}", types.DEREGISTER);
-        JSONObject msg = deregisterMessage.message;
+        JSONObject msg = deregisterMessage.getJson();
 
         //make new MessageClient to send register message
         sendCl.setMessage(msg);

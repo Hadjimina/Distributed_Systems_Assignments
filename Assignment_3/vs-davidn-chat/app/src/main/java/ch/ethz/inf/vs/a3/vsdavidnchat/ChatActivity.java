@@ -70,7 +70,7 @@ public class ChatActivity extends MessageClientCallbackClass {
         //make a registerMessage.
         MessageTypes types = new MessageTypes();
         Message chatLog = new Message(username, uuid, "{}", types.RETRIEVE_CHAT_LOG);
-        JSONObject msg = chatLog.message;
+        JSONObject msg = chatLog.getJson();
 
         //make new MessageClient to send chat log message
         MessageClient sendCl = new MessageClient(msg, serverAddr, serverPort, username, uuid, this, true);

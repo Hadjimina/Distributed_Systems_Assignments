@@ -1,43 +1,87 @@
 package ch.ethz.inf.vs.a3.vsdavidnchat;
 
-import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.UUID;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeoutException;
+
+import ch.ethz.inf.vs.a3.message.Message;
 import ch.ethz.inf.vs.a3.message.MessageComparator;
+import ch.ethz.inf.vs.a3.message.MessageTypes;
 import ch.ethz.inf.vs.a3.queue.PriorityQueue;
+import ch.ethz.inf.vs.a3.udpclient.NetworkConsts;
 
-public class ChatActivity extends AppCompatActivity {
+public class ChatActivity extends MessageClientCallbackClass {
 
+    UUID uuid;
     TextView msgView;
     PriorityQueue<Message> queue;
-    //TODO CHANGE CLASS OF MESSAGE
+    NetworkConsts netConsts;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
+        netConsts = new NetworkConsts();
+        uuid = UUID.fromString(getIntent().getStringExtra("UUID"));
         msgView = (TextView)findViewById(R.id.messageView);
-
         MessageComparator comparator = new MessageComparator();
         queue = new PriorityQueue<>(comparator);
 
-        getMessagesIntoQueue();
-        setViewContent();
+
+        try {
+            getMessagesIntoQueue();
+        } catch (JSONException e) {
+            System.out.println("JSON ERROR");
+            e.printStackTrace();
+        } catch (Exception e){
+            System.out.println("PROBABLY ASYNC ERROR");
+            e.printStackTrace();
+        }
+
+        displayMessages();
     }
 
 
 
-    public void setViewContent(){
+    public void displayMessages(){
         while(!queue.isEmpty()){
             Message current = queue.poll();
             msgView.append(current.toString() + "\n");
         }
     }
 
-    public void getMessagesIntoQueue(){
-        //TODO Get messages from server
+    public void getMessagesIntoQueue() throws JSONException, InterruptedException, ExecutionException, TimeoutException {
+        //get ServerAddress, ServerPort from Settings or use default.
+        SharedPreferences sharedPref = getSharedPreferences("values", MODE_PRIVATE);
+        String serverAddr = sharedPref.getString("address", netConsts.SERVER_ADDRESS);
+        String serverPort = sharedPref.getString("port", netConsts.UDP_PORT+"");
+
+        String username = "";
+
+        //make a registerMessage.
+        MessageTypes types = new MessageTypes();
+        Message chatLog = new Message(username, uuid, "{}", types.RETRIEVE_CHAT_LOG);
+        JSONObject msg = chatLog.message;
+
+        //make new MessageClient to send chat log message
+        MessageClient sendCl = new MessageClient(msg, serverAddr, serverPort, username, uuid, this, true);
+
+        sendCl.execute();
+
+
     }
 
+    @Override
+    public void handleMessageResponse(String response) {
+        Log.d("#", "THIS IS RESPONSE1: " + response);
+    }
 }

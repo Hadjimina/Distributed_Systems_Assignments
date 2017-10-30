@@ -25,17 +25,19 @@ public class Message {
 
     }
 
-    public Message(JSONObject jsonObject){
+    public Message(JSONObject jsonObject, boolean hasBody){
         try {
             JSONObject header = jsonObject.getJSONObject("header");
             JSONObject body = jsonObject.getJSONObject("body");
 
             this.username = header.getString("username");
             this.uuid = UUID.fromString(header.getString("uuid"));
-            JSONObject timestamp = header.getJSONObject("timestamp");
-            this.timestamp = timestamp.toString();
-
+            this.timestamp  = header.getString("timestamp");
             this.type = header.getString("type");
+
+            if(hasBody){
+                this.content = body.getString("content");
+            }
         }catch (JSONException e){
             e.printStackTrace();
         }
@@ -58,6 +60,9 @@ public class Message {
     }
 
 
+    public String getContent() {
+        return content;
+    }
 
     public JSONObject getJson(){
         JSONObject json = new JSONObject();

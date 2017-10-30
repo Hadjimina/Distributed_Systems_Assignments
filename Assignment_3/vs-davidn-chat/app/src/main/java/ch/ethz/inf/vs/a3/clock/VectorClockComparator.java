@@ -12,9 +12,9 @@ public class VectorClockComparator implements Comparator<VectorClock> {
     public int compare(VectorClock lhs, VectorClock rhs) {
 
         if(lhs.happenedBefore(rhs)){
-            return 1;
-        }else{
             return -1;
+        }else{
+            return 1;
         }
 
     }

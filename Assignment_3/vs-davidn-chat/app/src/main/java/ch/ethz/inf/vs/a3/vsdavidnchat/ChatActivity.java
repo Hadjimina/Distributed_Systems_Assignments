@@ -3,6 +3,8 @@ package ch.ethz.inf.vs.a3.vsdavidnchat;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -31,32 +33,56 @@ public class ChatActivity extends MessageClientCallbackClass {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
+
         netConsts = new NetworkConsts();
         uuid = UUID.fromString(getIntent().getStringExtra("UUID"));
         msgView = (TextView)findViewById(R.id.messageView);
+
         MessageComparator comparator = new MessageComparator();
         queue = new PriorityQueue<>(comparator);
+        Button getLog = (Button) findViewById(R.id.getLog);
+        getLog.setText("Get Log");
+        getLog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getMessages();
+            }
+        });
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        getMessages();
+
+    }
+
+    @Override
+    public boolean onSupportNavigateUp(){
+        finish();
+        return true;
+    }
+
+    public void getMessages(){
         try {
+            msgView.setText("Please while the messages are loading");
             getMessagesIntoQueue();
+
         } catch (JSONException e) {
-            System.out.println("JSON ERROR");
             e.printStackTrace();
-        } catch (Exception e){
-            System.out.println("PROBABLY ASYNC ERROR");
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
             e.printStackTrace();
         }
-
-        displayMessages();
     }
 
 
-
     public void displayMessages(){
+        msgView.setText("");
         while(!queue.isEmpty()){
             Message current = queue.poll();
-            msgView.append(current.toString() + "\n");
+            msgView.append(current.getContent() + "\n");
         }
     }
 
@@ -83,13 +109,12 @@ public class ChatActivity extends MessageClientCallbackClass {
 
     @Override
     public void handleMessageResponse(String response){
-        Log.d("#", "THIS IS RESPONSE1: " + response);
         try {
             JSONArray jsonArray = new JSONArray(response);
 
-            for(int i = 0; i < jsonArray.length(); i++){
-                Message temp = new Message((JSONObject) jsonArray.get(i));
-                queue.add(temp);
+            for(int i = 0; i < 7; i++){
+               Message temp = new Message(jsonArray.getJSONObject(i), true);
+               queue.add(temp);
             }
 
         }catch (JSONException e){

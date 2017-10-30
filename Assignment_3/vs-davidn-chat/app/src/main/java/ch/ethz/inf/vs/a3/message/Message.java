@@ -13,7 +13,7 @@ import java.util.UUID;
 
 public class Message {
 
-    String username, timestamp, type;
+    String username, type, content, timestamp;
     UUID uuid;
 
     public Message(String username, UUID uuid, String timestamp, String type){
@@ -24,6 +24,40 @@ public class Message {
         this.type = type;
 
     }
+
+    public Message(JSONObject jsonObject){
+        try {
+            JSONObject header = jsonObject.getJSONObject("header");
+            JSONObject body = jsonObject.getJSONObject("body");
+
+            this.username = header.getString("username");
+            this.uuid = UUID.fromString(header.getString("uuid"));
+            JSONObject timestamp = header.getJSONObject("timestamp");
+            this.timestamp = timestamp.toString();
+
+            this.type = header.getString("type");
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+    }
+
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public void setContent(JSONObject body) {
+        try{
+            this.content = body.getString("content");
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+    }
+
+    public void setContent(String content){
+        this.content = content;
+    }
+
+
 
     public JSONObject getJson(){
         JSONObject json = new JSONObject();
@@ -44,5 +78,7 @@ public class Message {
         Log.d("#", "message: " + json.toString());
         return json;
     }
+
+
 
 }

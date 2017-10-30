@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -81,7 +82,21 @@ public class ChatActivity extends MessageClientCallbackClass {
     }
 
     @Override
-    public void handleMessageResponse(String response) {
+    public void handleMessageResponse(String response){
         Log.d("#", "THIS IS RESPONSE1: " + response);
+        try {
+            JSONArray jsonArray = new JSONArray(response);
+
+            for(int i = 0; i < jsonArray.length(); i++){
+                Message temp = new Message((JSONObject) jsonArray.get(i));
+                queue.add(temp);
+            }
+
+        }catch (JSONException e){
+            e.printStackTrace();
+            Log.e("JSON", "JSON parse error occured");
+        }
+
+        displayMessages();
     }
 }

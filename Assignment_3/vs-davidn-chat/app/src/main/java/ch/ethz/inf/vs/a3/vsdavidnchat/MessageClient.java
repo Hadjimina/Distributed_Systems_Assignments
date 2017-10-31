@@ -53,8 +53,13 @@ public class MessageClient extends AsyncTask {
     protected Object doInBackground(Object[] objects) {
         Log.d("#", "doIn Background started");
         String response = "";
-        while (response.equals("")){
+        int limit = 0;
+        while (response.equals("") && limit < 20){
             response += sendAndReceive();
+            limit++;
+        }
+        if (limit >= 20){
+            throw new Error("Server does not respond");
         }
         currentResp = response;
         return response;

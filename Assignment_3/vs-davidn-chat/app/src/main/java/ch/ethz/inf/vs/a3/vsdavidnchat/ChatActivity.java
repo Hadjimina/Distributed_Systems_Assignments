@@ -63,7 +63,7 @@ public class ChatActivity extends MessageClientCallbackClass {
 
     public void getMessages(){
         try {
-            msgView.setText("Please while the messages are loading");
+            msgView.setText("Please wait while the messages are loading");
             getMessagesIntoQueue();
 
         } catch (JSONException e) {

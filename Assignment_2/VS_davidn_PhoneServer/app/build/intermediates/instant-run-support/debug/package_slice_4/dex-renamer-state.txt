@@ -1,4 +1,0 @@
-#Fri Oct 20 10:51:14 CEST 2017
-base.0=/home/philipp/Coding/Distributed_Systems_Assignments/Assignment_2/VS_davidn_PhoneServer/app/build/intermediates/transforms/dex/debug/folders/1000/5/slice_4
-renamed.0=classes.dex
-file.0=/home/philipp/Coding/Distributed_Systems_Assignments/Assignment_2/VS_davidn_PhoneServer/app/build/intermediates/transforms/dex/debug/folders/1000/5/slice_4/classes.dex

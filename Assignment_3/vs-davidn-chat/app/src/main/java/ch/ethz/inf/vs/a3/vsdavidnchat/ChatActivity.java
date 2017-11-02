@@ -27,6 +27,7 @@ public class ChatActivity extends MessageClientCallbackClass {
     TextView msgView;
     PriorityQueue<Message> queue;
     NetworkConsts netConsts;
+    String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +37,7 @@ public class ChatActivity extends MessageClientCallbackClass {
 
         netConsts = new NetworkConsts();
         uuid = UUID.fromString(getIntent().getStringExtra("UUID"));
+        username = getIntent().getStringExtra("Username");
         msgView = (TextView)findViewById(R.id.messageView);
 
         MessageComparator comparator = new MessageComparator();
@@ -91,9 +93,6 @@ public class ChatActivity extends MessageClientCallbackClass {
         SharedPreferences sharedPref = getSharedPreferences("values", MODE_PRIVATE);
         String serverAddr = sharedPref.getString("address", netConsts.SERVER_ADDRESS);
         String serverPort = sharedPref.getString("port", netConsts.UDP_PORT+"");
-
-        //TODO initialize username.
-        String username = "";
 
         //make a registerMessage.
         MessageTypes types = new MessageTypes();

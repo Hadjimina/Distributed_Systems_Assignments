@@ -30,6 +30,7 @@ public class MainActivity extends MessageClientCallbackClass implements Button.O
     UUID uuid;
     MessageClient sendCl;
     NetworkConsts netConsts;
+    boolean registered;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +92,8 @@ public class MainActivity extends MessageClientCallbackClass implements Button.O
             makeNotification();
             Intent myIntent = new Intent(this,ChatActivity.class);
             myIntent.putExtra("UUID",uuid.toString());
+            myIntent.putExtra("Username", username);
+            registered = true;
             startActivityForResult(myIntent, 0);
         }
     }
@@ -111,9 +114,7 @@ public class MainActivity extends MessageClientCallbackClass implements Button.O
         JSONObject resp = new JSONObject(response);
         if(resp.getJSONObject("header").get("type").equals("ack")){
             Log.d("#", "response is an ack!");
-            Intent myIntent = new Intent(this,ChatActivity.class);
-            myIntent.putExtra("UUID",uuid.toString());
-            startActivityForResult(myIntent, 0);
+            registered = false;
         }
     }
 
@@ -142,7 +143,7 @@ public class MainActivity extends MessageClientCallbackClass implements Button.O
 
     @Override
     public void onBackPressed() {
-        if(uuid != null){
+        if(uuid != null && registered){
             try {
                 deregister();
             } catch (JSONException e) {
@@ -154,7 +155,7 @@ public class MainActivity extends MessageClientCallbackClass implements Button.O
 
     @Override
     protected void onDestroy() {
-        if (uuid != null){
+        if (uuid != null && registered){
             try {
                 deregister();
             } catch (JSONException e) {

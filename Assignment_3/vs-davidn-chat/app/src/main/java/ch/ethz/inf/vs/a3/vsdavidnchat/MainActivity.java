@@ -142,20 +142,24 @@ public class MainActivity extends MessageClientCallbackClass implements Button.O
 
     @Override
     public void onBackPressed() {
-        try {
-            deregister();
-        } catch (JSONException e) {
-            e.printStackTrace();
+        if(uuid != null){
+            try {
+                deregister();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
         super.onBackPressed();
     }
 
     @Override
     protected void onDestroy() {
-        try {
-            deregister();
-        } catch (JSONException e) {
-            e.printStackTrace();
+        if (uuid != null){
+            try {
+                deregister();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
         super.onDestroy();
     }

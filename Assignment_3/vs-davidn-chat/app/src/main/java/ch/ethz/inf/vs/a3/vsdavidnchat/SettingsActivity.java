@@ -26,7 +26,6 @@ public class SettingsActivity extends AppCompatActivity implements Button.OnClic
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    //TODO JASON: tun nah mache dass wenns successfully gspeicheret isch den settis effach "finish()" calle. den chunsch zu de vorherige activity
     @Override
     public void onClick(View view) {
         SharedPreferences sharedPref = getSharedPreferences("values", Context.MODE_PRIVATE);
@@ -46,6 +45,7 @@ public class SettingsActivity extends AppCompatActivity implements Button.OnClic
             default:
                 break;
         }
+        finish();
     }
 
 

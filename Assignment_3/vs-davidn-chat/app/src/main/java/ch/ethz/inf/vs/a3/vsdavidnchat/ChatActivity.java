@@ -92,6 +92,7 @@ public class ChatActivity extends MessageClientCallbackClass {
         String serverAddr = sharedPref.getString("address", netConsts.SERVER_ADDRESS);
         String serverPort = sharedPref.getString("port", netConsts.UDP_PORT+"");
 
+        //TODO initialize username.
         String username = "";
 
         //make a registerMessage.
